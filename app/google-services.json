@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "89205254270",
+    "firebase_url": "https://ptoyectefinalrestaurante-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "ptoyectefinalrestaurante",
+    "storage_bucket": "ptoyectefinalrestaurante.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:89205254270:android:9fc3fc97895b04619dd02f",
+        "android_client_info": {
+          "package_name": "com.example.finalusuario"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxvwMBlBZy3jSRQwdXl0wDxFK3oVFvuuc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:89205254270:android:8fb60b4bcd3ebc049dd02f",
+        "android_client_info": {
+          "package_name": "com.example.pruevadb"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxvwMBlBZy3jSRQwdXl0wDxFK3oVFvuuc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:89205254270:android:d3b99648805b223d9dd02f",
+        "android_client_info": {
+          "package_name": "com.example.ptoyectefinalrestaurante"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxvwMBlBZy3jSRQwdXl0wDxFK3oVFvuuc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
