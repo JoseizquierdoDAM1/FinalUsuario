@@ -12,11 +12,13 @@ public class Restaurante implements Serializable{
     private String dniUsuario;
     private String imagen;
     private int Comensales;
+    private int valoracion;
     private ArrayList<Reserva>reservas;
     private ArrayList<String>horastdesayuno;
     private ArrayList<String>horastcomida;
     private ArrayList<String>horastcena;
     private ArrayList<String>turnos;
+    private ArrayList<Reseña>reseñas;
 
 
     public Restaurante() {
@@ -32,6 +34,34 @@ public class Restaurante implements Serializable{
         this.imagen = imagen;
         Comensales = comensales;
         this.reservas = reservas;
+    }
+
+    public Restaurante(String id, String nombre, String ciudad, String tipo, String imageUrl) {
+    }
+
+    public Restaurante(String id, String nombre, String tipo, String ciudad, String dniUsuario, String imageUrl, int comensales, ArrayList<Reserva> reservas, ArrayList<Reseña> reseñas) {
+        this.id = id;
+        this.nombre = nombre;
+        this.tipo = tipo;
+        this.ciudad = ciudad;
+        this.dniUsuario = dniUsuario;
+        this.imagen = imageUrl;
+        Comensales = comensales;
+        this.reservas = reservas;
+        this.reseñas=reseñas;
+    }
+
+    public Restaurante(String id, String nombre, String tipo, String ciudad, String dniUsuario, String imageUrl, int comensales, ArrayList<Reserva> reservas, ArrayList<Reseña> reseñas, int valoracion) {
+        this.id = id;
+        this.nombre = nombre;
+        this.tipo = tipo;
+        this.ciudad = ciudad;
+        this.dniUsuario = dniUsuario;
+        this.imagen = imageUrl;
+        Comensales = comensales;
+        this.reservas = reservas;
+        this.reseñas=reseñas;
+        this.valoracion=valoracion;
     }
 
     public  String getId(){return id;}
@@ -127,4 +157,19 @@ public class Restaurante implements Serializable{
         this.reservas = reservas;
     }
 
+    public ArrayList<Reseña> getReseñas() {
+        return reseñas;
+    }
+
+    public void setReseñas(ArrayList<Reseña> reseñas) {
+        this.reseñas = reseñas;
+    }
+
+    public int getValoracion() {
+        return valoracion;
+    }
+
+    public void setValoracion(int valoracion) {
+        this.valoracion = valoracion;
+    }
 }

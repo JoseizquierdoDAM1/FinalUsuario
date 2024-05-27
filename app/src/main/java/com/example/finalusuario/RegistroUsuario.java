@@ -1,27 +1,33 @@
 package com.example.finalusuario;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+
 
 public class RegistroUsuario extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro_usuario);
     }
-    public void registro(View view){
+    public void subir(View view){
         final EditText nombreuser = findViewById(R.id.labelNombre);
         final EditText email = findViewById(R.id.labelEmail);
         final EditText dni = findViewById(R.id.dni);
@@ -48,6 +54,7 @@ public class RegistroUsuario extends AppCompatActivity {
                 if (!usuarioExistente) {
                     if (contraseña.getText().toString().equals(confirmarcontraseña.getText().toString())) {
                         Usuario u = new Usuario(nombreUsuario, email.getText().toString(), contraseña.getText().toString(), dni.getText().toString(), "dueño");
+
                         usuariosRef.child(nombreUsuario).setValue(u);
                         error.setText("¡Usuario registrado exitosamente!");
                         error.setVisibility(View.VISIBLE);
@@ -69,4 +76,9 @@ public class RegistroUsuario extends AppCompatActivity {
             }
         });
     }
+
+
+
+
+
 }

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
     <!-- Declarar los permisos aquí -->
     <uses-permission android:name="android.permission.READ_CALENDAR" />
     <uses-permission android:name="android.permission.WRITE_CALENDAR" />
@@ -16,7 +15,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FinalUsuario"
         tools:targetApi="31">
-
+        <activity
+            android:name=".VerResenas"
+            android:exported="false" />
+        <activity
+            android:name=".ResenaActivity"
+            android:exported="false"
+            android:label="@string/title_activity_resena"
+            android:theme="@style/Theme.FinalUsuario" />
         <activity
             android:name=".DetalleRestaurante"
             android:exported="false" />
@@ -31,6 +37,7 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

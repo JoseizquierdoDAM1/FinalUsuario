@@ -57,7 +57,6 @@ public class DetalleRestaurante extends AppCompatActivity {
     Spinner spinnerHora;
     Usuario usuario;
     EditText comensales=null;
-    private static final int PERMISSIONS_REQUEST_WRITE_CALENDAR = 100;
 
 
     @Override
@@ -226,13 +225,16 @@ public class DetalleRestaurante extends AppCompatActivity {
         String horaseleccionada = (String) spinnerHora.getSelectedItem();
 
         Toast.makeText(getApplicationContext(), fechaSeleccionada + "  " + horaseleccionada, Toast.LENGTH_SHORT).show();
+        int id=0;
 
-        Reserva r = new Reserva(usuario.getNombreUsuario(), restaurante.getNombre(), fechaSeleccionada, turnoseleccionado, horaseleccionada, Integer.valueOf(comensales.getText().toString()));
 
         if (restaurante.getReservas() == null) {
             restaurante.setReservas(new ArrayList<>());
+            id=1;
+        }else {
+            id=restaurante.getReservas().size()+1;
         }
-
+        Reserva r = new Reserva(id,usuario.getNombreUsuario(), restaurante.getId(),restaurante.getNombre(), fechaSeleccionada, turnoseleccionado, horaseleccionada, Integer.valueOf(comensales.getText().toString()));
         // Agregar la nueva reserva a la lista
         restaurante.getReservas().add(r);
 
@@ -244,10 +246,6 @@ public class DetalleRestaurante extends AppCompatActivity {
                     public void onSuccess(Void aVoid) {
                         // Operación de escritura exitosa, redirigir a la actividad de ver restaurantes
                         guardarMensaje(r);
-
-                        Intent i = new Intent(DetalleRestaurante.this, VerRestaurantes.class);
-                        i.putExtra("usuario",usuario);
-                        startActivity(i);
 
                     }
                 })
@@ -285,6 +283,9 @@ public class DetalleRestaurante extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             Log.d("Firebase", "Mensaje guardado correctamente");
+                            Intent i = new Intent(DetalleRestaurante.this, VerRestaurantes.class);
+                            i.putExtra("usuario",usuario);
+                            startActivity(i);
                         } else {
                             Log.e("Firebase", "Error al guardar el mensaje", task.getException());
                         }

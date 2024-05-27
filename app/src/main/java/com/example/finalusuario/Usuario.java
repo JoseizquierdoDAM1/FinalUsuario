@@ -1,7 +1,6 @@
 package com.example.finalusuario;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class Usuario implements Serializable {
     private String nombreUsuario;
@@ -9,12 +8,21 @@ public class Usuario implements Serializable {
     private String contraseña;
     private String dni;
     private String tipUser;
+    private String imageURL;
 
 
     public Usuario() {
     }
 
-    public Usuario(String nombreUsuario, String correo, String contraseña,String dni, String tipUser) {
+    public Usuario(String nombreUsuario, String correo, String contraseña, String dni, String tipUser, String imageURL) {
+        this.nombreUsuario = nombreUsuario;
+        this.correo = correo;
+        this.contraseña = contraseña;
+        this.dni=dni;
+        this.tipUser = tipUser;
+        this.imageURL = imageURL;
+    }
+    public Usuario(String nombreUsuario, String correo, String contraseña, String dni, String tipUser) {
         this.nombreUsuario = nombreUsuario;
         this.correo = correo;
         this.contraseña = contraseña;
@@ -65,4 +73,11 @@ public class Usuario implements Serializable {
         this.tipUser = tipUser;
     }
 
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+    }
 }
