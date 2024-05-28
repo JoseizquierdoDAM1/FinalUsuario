@@ -7,7 +7,7 @@ public class Reserva implements Serializable {
 
     private int id;
     private String nombreUsuario;
-
+    private String idUsuario;
     private String idRestaurante;
     private String restaurante;
     private Date dia;
@@ -18,27 +18,11 @@ public class Reserva implements Serializable {
     public Reserva() {
     }
 
-    public Reserva(String nombreUsuario, String restaurante, Date dia, String turno, String hora, int comensales) {
-        this.nombreUsuario = nombreUsuario;
-        this.restaurante = restaurante;
-        this.dia = dia;
-        this.turno = turno;
-        this.hora = hora;
-        this.comensales = comensales;
-    }
 
-    public Reserva(String nombreUsuario, String idRestaurante, String restaurante, Date dia, String turno, String hora, int comensales) {
-        this.nombreUsuario = nombreUsuario;
-        this.idRestaurante = idRestaurante;
-        this.restaurante = restaurante;
-        this.dia = dia;
-        this.turno = turno;
-        this.hora = hora;
-        this.comensales = comensales;
-    }
 
-    public Reserva(int id, String nombreUsuario, String idRestaurante, String restaurante, Date dia, String turno, String hora, int comensales) {
+    public Reserva(int id,String idUsuario, String nombreUsuario, String idRestaurante, String restaurante, Date dia, String turno, String hora, int comensales) {
         this.id=id;
+        this.idUsuario=idUsuario;
         this.nombreUsuario = nombreUsuario;
         this.idRestaurante = idRestaurante;
         this.restaurante = restaurante;

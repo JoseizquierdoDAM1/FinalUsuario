@@ -157,13 +157,13 @@
         android:visibility="invisible"
         app:srcCompat="@android:drawable/btn_star_big_on" />
 
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="331dp"
-        android:layout_height="41dp"
+    <Button
+        android:id="@+id/buttonreseñas"
+        android:layout_width="137dp"
+        android:layout_height="wrap_content"
         android:layout_marginVertical="330dp"
-        android:onClick="verReservas"
-        android:text="Ver reservas" />
+        android:layout_marginStart="110dp"
+        android:text="Ver reseñas" />
 
     <!-- Botón para ver detalle -->
 

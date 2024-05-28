@@ -3,26 +3,31 @@ package com.example.finalusuario;
 import java.io.Serializable;
 
 public class Usuario implements Serializable {
+
+    private String id;
     private String nombreUsuario;
     private String correo;
     private String contraseña;
     private String dni;
     private String tipUser;
-    private String imageURL;
+    private String urlImagen;
 
 
     public Usuario() {
     }
 
-    public Usuario(String nombreUsuario, String correo, String contraseña, String dni, String tipUser, String imageURL) {
+    public Usuario(String id,String nombreUsuario, String correo, String contraseña, String dni, String tipUser, String imageURL) {
+        this.id=id;
         this.nombreUsuario = nombreUsuario;
         this.correo = correo;
         this.contraseña = contraseña;
         this.dni=dni;
         this.tipUser = tipUser;
-        this.imageURL = imageURL;
+        this.urlImagen = imageURL;
     }
-    public Usuario(String nombreUsuario, String correo, String contraseña, String dni, String tipUser) {
+    
+    public Usuario(String id,String nombreUsuario, String correo, String contraseña, String dni, String tipUser) {
+        this.id=id;
         this.nombreUsuario = nombreUsuario;
         this.correo = correo;
         this.contraseña = contraseña;
@@ -30,13 +35,13 @@ public class Usuario implements Serializable {
         this.tipUser = tipUser;
     }
 
-
+    public Usuario(String nombre, String correo, String dni, String tipoUser) {
+    }
 
 
     public String getNombreUsuario() {
         return nombreUsuario;
     }
-
     public void setNombreUsuario(String nombreUsuario) {
         this.nombreUsuario = nombreUsuario;
     }
@@ -73,11 +78,21 @@ public class Usuario implements Serializable {
         this.tipUser = tipUser;
     }
 
-    public String getImageURL() {
-        return imageURL;
+    public String getUrlImagen() {
+        return urlImagen;
     }
 
-    public void setImageURL(String imageURL) {
-        this.imageURL = imageURL;
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setUrlImagen(String urlImagen) {
+        this.urlImagen = urlImagen;
+
+
     }
 }

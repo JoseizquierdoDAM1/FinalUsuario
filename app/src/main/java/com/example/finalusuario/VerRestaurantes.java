@@ -62,8 +62,15 @@ public class VerRestaurantes extends AppCompatActivity {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         if(item.getItemId()==R.id.action_perfil){
+                            Intent i= new Intent(VerRestaurantes.this, menuPerfil.class);
+                            i.putExtra("usuario",usuario);
+                            startActivity(i);
                         }
-                        if(item.getItemId()==R.id.action_reservas){}
+                        if(item.getItemId()==R.id.action_reservas){
+                            Intent i= new Intent(VerRestaurantes.this, menuReservas.class);
+                            i.putExtra("usuario",usuario);
+                            startActivity(i);
+                        }
                         if(item.getItemId()==R.id.action_reseñas){}
                         if(item.getItemId()==R.id.action_restFav){}
 
@@ -140,7 +147,7 @@ public class VerRestaurantes extends AppCompatActivity {
 
 
     public void verNotificaciones() {
-        DatabaseReference mensajesRef = FirebaseDatabase.getInstance().getReference("Usuarios").child(usuario.getNombreUsuario()).child("mensajes");
+        DatabaseReference mensajesRef = FirebaseDatabase.getInstance().getReference("Usuarios").child(usuario.getId()).child("mensajes");
 
         mensajesRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -299,11 +306,6 @@ public class VerRestaurantes extends AppCompatActivity {
         });
     }
 
-    public void verReservas(View view){
-        Intent i = new Intent(VerRestaurantes.this,ResenaActivity.class);
-        i.putExtra("usuario",usuario);
-
-    }
 
 
 }

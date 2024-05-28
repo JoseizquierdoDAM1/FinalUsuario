@@ -74,7 +74,7 @@ public class MensajeDialogFragment extends DialogFragment {
 
     private void loadMessages() {
         if (user != null) {
-            DatabaseReference mensajesRef = FirebaseDatabase.getInstance().getReference("Usuarios").child(user.getNombreUsuario()).child("mensajes");
+            DatabaseReference mensajesRef = FirebaseDatabase.getInstance().getReference("Usuarios").child(user.getId()).child("mensajes");
 
             mensajesRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -96,7 +96,7 @@ public class MensajeDialogFragment extends DialogFragment {
     }
 
     public void eliminarMensajes(){
-        DatabaseReference mensajesRef = FirebaseDatabase.getInstance().getReference("Usuarios").child(user.getNombreUsuario()).child("mensajes");
+        DatabaseReference mensajesRef = FirebaseDatabase.getInstance().getReference("Usuarios").child(user.getId()).child("mensajes");
 
         mensajesRef.removeValue();
 

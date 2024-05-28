@@ -234,7 +234,7 @@ public class DetalleRestaurante extends AppCompatActivity {
         }else {
             id=restaurante.getReservas().size()+1;
         }
-        Reserva r = new Reserva(id,usuario.getNombreUsuario(), restaurante.getId(),restaurante.getNombre(), fechaSeleccionada, turnoseleccionado, horaseleccionada, Integer.valueOf(comensales.getText().toString()));
+        Reserva r = new Reserva(id,usuario.getId(),usuario.getNombreUsuario(), restaurante.getId(),restaurante.getNombre(), fechaSeleccionada, turnoseleccionado, horaseleccionada, Integer.valueOf(comensales.getText().toString()));
         // Agregar la nueva reserva a la lista
         restaurante.getReservas().add(r);
 
@@ -259,7 +259,7 @@ public class DetalleRestaurante extends AppCompatActivity {
     }
 
     public void guardarMensaje(Reserva r) {
-        DatabaseReference usuariosRef = FirebaseDatabase.getInstance().getReference("Usuarios").child(usuario.getNombreUsuario());
+        DatabaseReference usuariosRef = FirebaseDatabase.getInstance().getReference("Usuarios").child(usuario.getId());
 
         usuariosRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

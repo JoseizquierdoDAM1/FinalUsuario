@@ -92,15 +92,7 @@ public class RestauranteAdapter extends RecyclerView.Adapter<RestauranteAdapter.
                 .load(restaurante.getImagen())
                 //.error(R.drawable.error_image) // Imagen de error en caso de fallo
                 .into(holder.imagenImageView);
-
-        // Verificar y cargar reseñas
-        /**if (restaurante.getReseñas() != null) {
-         ReseñaAdapter adapter = new ReseñaAdapter(restaurante.getReseñas());
-         holder.recyclerReseña.setLayoutManager(new LinearLayoutManager(context));
-         holder.recyclerReseña.setAdapter(adapter);
-         }**/
-
-        DatabaseReference UsuariosRef = FirebaseDatabase.getInstance().getReference("Usuarios").child(usuario.getNombreUsuario()).child("restaurantesFavoritos");
+        DatabaseReference UsuariosRef = FirebaseDatabase.getInstance().getReference("Usuarios").child(usuario.getId()).child("restaurantesFavoritos");
         UsuariosRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -110,7 +102,7 @@ public class RestauranteAdapter extends RecyclerView.Adapter<RestauranteAdapter.
                 boolean esFavorito = false;
                 if (favoritos != null) {
                     for (Restaurante r : favoritos) {
-                        if (r.getId() == restaurante.getId()) {
+                        if (r.getId() .equals( restaurante.getId())) {
                             esFavorito = true;
                             break;
                         }
@@ -118,11 +110,11 @@ public class RestauranteAdapter extends RecyclerView.Adapter<RestauranteAdapter.
                 }
                 if (esFavorito) {
 
-                    holder.EstrellaFavorito.setVisibility(View.INVISIBLE);
-                    holder.EstrellaNoFavorito.setVisibility(View.VISIBLE);
-                } else {
                     holder.EstrellaFavorito.setVisibility(View.VISIBLE);
                     holder.EstrellaNoFavorito.setVisibility(View.INVISIBLE);
+                } else {
+                    holder.EstrellaFavorito.setVisibility(View.INVISIBLE);
+                    holder.EstrellaNoFavorito.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -156,7 +148,6 @@ public class RestauranteAdapter extends RecyclerView.Adapter<RestauranteAdapter.
                     if (favoritos == null) {
 
                     } else {
-                        Toast.makeText(applicationContext, String.valueOf(favoritos.size()), Toast.LENGTH_SHORT).show();
                         for(Restaurante r:favoritos){
                             if(r.getId().equals(restaurante.getId())){
                                 favoritos.remove(r);
@@ -213,6 +204,16 @@ public class RestauranteAdapter extends RecyclerView.Adapter<RestauranteAdapter.
                 }
             });
         });
+        holder.buttonreseñas.setOnClickListener(view -> {
+            Context context = view.getContext();
+            Restaurante restauranteSeleccionado = restaurantes.get(holder.getAdapterPosition());
+            Intent intent = new Intent(context, VerResenas.class);
+            intent.putExtra("restaurante", restauranteSeleccionado);
+            intent.putExtra("usuario", usuario);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+
+        });
     }
 
     @Override
@@ -225,7 +226,7 @@ public class RestauranteAdapter extends RecyclerView.Adapter<RestauranteAdapter.
         ImageView ell1,ell2,ell3,ell4,ell5;;
 
         TextView nombreTextView, tipoTextView, ciudadTextView;
-        Button button7;
+        Button button7,buttonreseñas;
         RecyclerView recyclerReseña;
 
         public RestauranteViewHolder(@NonNull View itemView) {
@@ -238,6 +239,7 @@ public class RestauranteAdapter extends RecyclerView.Adapter<RestauranteAdapter.
             EstrellaFavorito = itemView.findViewById(R.id.estrellaFavorito);
             EstrellaNoFavorito = itemView.findViewById(R.id.estrellaNoFavorito);
             recyclerReseña = itemView.findViewById(R.id.recyclerreseñas);
+            buttonreseñas=itemView.findViewById(R.id.buttonreseñas);
 
             ell1=itemView.findViewById(R.id.ell1);
             ell2=itemView.findViewById(R.id.ell2);

@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,17 +39,24 @@ public class MainActivity extends AppCompatActivity {
 
                 for (DataSnapshot usuarioSnapshot : snapshot.getChildren()) {
                     // Obtener los datos del usuario del snapshot
+                    String id = usuarioSnapshot.child("id").getValue(String.class);
                     String nombre = usuarioSnapshot.child("nombreUsuario").getValue(String.class);
                     String correo = usuarioSnapshot.child("correo").getValue(String.class);
                     String contraseñaUsuario = usuarioSnapshot.child("contraseña").getValue(String.class);
                     String tipoUser = usuarioSnapshot.child("tipUser").getValue(String.class);
-                    String dni=usuarioSnapshot.child("dni").getValue(String.class);
+                    String dni = usuarioSnapshot.child("dni").getValue(String.class);
+                    String urlImagen = usuarioSnapshot.child("urlImagen").getValue(String.class);
+
+
                     // Comparar el nombre de usuario y contraseña
                     if (labelnombre.getText().toString().equals(nombre) && contraseña.getText().toString().equals(contraseñaUsuario)) {
                         usuarioEncontrado = true;
                         aviso.setText("El acceso es correcto para el usuario ");
                         Intent i = new Intent(MainActivity.this,VerRestaurantes.class);
-                        Usuario u = new Usuario( nombre,  correo,  contraseñaUsuario, dni,  tipoUser);
+                        Usuario u = new Usuario( id,nombre,  correo,  contraseñaUsuario, dni,  tipoUser);
+                        if (urlImagen != null) {
+                            u.setUrlImagen(urlImagen);
+                        }
                         i.putExtra("usuario", u);
 
                         startActivity(i);
