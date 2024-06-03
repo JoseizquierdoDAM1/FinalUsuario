@@ -13,39 +13,40 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="184dp"
+            android:layout_height="89dp"
             android:layout_weight="1"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="#4a59a0"
                 android:orientation="horizontal">
 
                 <LinearLayout
-                    android:layout_width="633dp"
+                    android:layout_width="599dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
                     <RelativeLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="300dp"
                         android:layout_height="match_parent">
 
                         <ImageView
                             android:id="@+id/imageView"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_width="301dp"
+                            android:layout_height="match_parent"
                             app:srcCompat="@drawable/aaaaa_logo1" />
 
                         <TextView
                             android:id="@+id/labelVerNombre"
-                            android:layout_width="157dp"
+                            android:layout_width="153dp"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:layout_alignParentBottom="true"
-                            android:layout_marginEnd="44dp"
-                            android:layout_marginBottom="7dp"
+                            android:layout_marginEnd="32dp"
+                            android:layout_marginBottom="4dp"
                             android:shadowColor="#FFFFFF"
                             android:text="TextView"
                             android:textColor="#FFFFFF" />
@@ -69,10 +70,10 @@
                         <ImageView
                             android:id="@+id/imageView2"
                             android:layout_width="match_parent"
-                            android:layout_height="40dp"
+                            android:layout_height="match_parent"
                             android:onClick="perfil"
                             android:textAlignment="center"
-                            app:srcCompat="@drawable/perfil" />
+                            app:srcCompat="@drawable/usuario_de_perfil__1_" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -87,8 +88,8 @@
 
                             <ImageView
                                 android:id="@+id/hayMensajes"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:onClick="notificaciones"
                                 android:src="@drawable/notificacion"
@@ -97,7 +98,7 @@
                             <ImageView
                                 android:id="@+id/noHayMensajes"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
                                 android:src="@drawable/campana__1_"
                                 android:visibility="invisible" />
                         </RelativeLayout>
@@ -110,14 +111,128 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="25dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <Spinner
+                    android:id="@+id/spinercomunidadesmain"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/rounded_corners" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <Spinner
+                    android:id="@+id/spinerprovinciasmain"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/rounded_corners" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <Spinner
+                    android:id="@+id/spinerciudadesmain"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/rounded_corners" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="26dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/button3"
+                        android:layout_width="match_parent"
+                        android:layout_height="27dp"
+                        android:background="@drawable/rounded_button"
+                        android:onClick="Filtrar"
+                        android:text="Filtrar"
+                        android:textColor="#FFFFFF" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.8"
+                android:orientation="vertical"></LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/button5"
+                    android:layout_width="match_parent"
+                    android:layout_height="27dp"
+                    android:background="@drawable/rounded_button"
+                    android:onClick="eliminarFiltros"
+                    android:text="Eliminar Filtros"
+                    android:textColor="#FFFFFF"
+                    android:visibility="visible" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="550dp"
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerreseñas"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclermenuRestaurantesFavoritos"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>

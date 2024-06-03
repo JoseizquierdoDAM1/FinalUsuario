@@ -1,5 +1,7 @@
 package com.example.finalusuario;
 
+import static android.text.TextUtils.split;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -37,6 +39,8 @@ import com.google.firebase.database.ValueEventListener;
 import android.content.Intent;
 import android.provider.CalendarContract;
 import android.provider.CalendarContract.Events;
+
+import java.time.Month;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -52,6 +56,8 @@ import android.Manifest;
 public class DetalleRestaurante extends AppCompatActivity {
     private Restaurante restaurante;
     long hoy = System.currentTimeMillis();
+    CalendarView myCalendarView;
+    Date fechaformateadahoy;
     Date fechaSeleccionada;
     Spinner spinnerTurno;
     Spinner spinnerHora;
@@ -64,6 +70,8 @@ public class DetalleRestaurante extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalle_restaurante);
 
+
+
         comensales=findViewById(R.id.editTextComensales);
 
         Intent intent = getIntent();
@@ -73,13 +81,14 @@ public class DetalleRestaurante extends AppCompatActivity {
         Intent intentusuario = getIntent();
         usuario = (Usuario) intentusuario.getSerializableExtra("usuario");
 
-        CalendarView myCalendarView = (CalendarView) findViewById(R.id.calendarView);
+        myCalendarView = (CalendarView) findViewById(R.id.calendarView);
         myCalendarView.setMinDate(hoy);
 
         Date fecha = new Date(hoy);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String fechaFormateada = sdf.format(fecha);
         try {
+            fechaformateadahoy=sdf.parse(fechaFormateada);
             fechaSeleccionada = sdf.parse(fechaFormateada);
         } catch (ParseException e) {
             throw new RuntimeException(e);
@@ -96,17 +105,23 @@ public class DetalleRestaurante extends AppCompatActivity {
                 } catch (ParseException e) {
                     throw new RuntimeException(e);
                 }
+                rellenarSpinners(0);
             }
         });
+        rellenarSpinners(0);
 
 
 
-        rellenarSpinners();
 
 
 
     }
-    public void rellenarSpinners(){
+    public void rellenarSpinners(int i){
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY); // 24-hour format
+
+        // Convertir la hora a una cadena si es necesario
+        String currentHour = String.format("%02d", hour);
 
         DatabaseReference restauranteRef = FirebaseDatabase.getInstance().getReference("Restaurantes").child(restaurante.getId());
 
@@ -115,9 +130,65 @@ public class DetalleRestaurante extends AppCompatActivity {
             public void onDataChange(DataSnapshot restauranteSnapshot) {
                 Restaurante r = new Restaurante();
                 // Obtener los datos del restaurante del snapshot
-                GenericTypeIndicator<ArrayList<String>> genericTypeIndicator = new GenericTypeIndicator<ArrayList<String>>() {};
-                ArrayList<String> turnos= restauranteSnapshot.child("turnos").getValue(genericTypeIndicator);
+                GenericTypeIndicator<ArrayList<String>> genericTypeIndicator = new GenericTypeIndicator<ArrayList<String>>() {
+                };
+                ArrayList<String> turnos = restauranteSnapshot.child("turnos").getValue(genericTypeIndicator);
 
+                ArrayList<String> horastdesayuno = restauranteSnapshot.child("horastdesayuno").getValue(genericTypeIndicator);
+                ArrayList<String> horastcomida = restauranteSnapshot.child("horastcomida").getValue(genericTypeIndicator);
+                ArrayList<String> horastcena = restauranteSnapshot.child("horastcena").getValue(genericTypeIndicator);
+
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                String fechaSeleccionadaS = sdf.format(fechaSeleccionada);
+                String fechaformateadahoyS = sdf.format(fechaformateadahoy);
+
+                if (i == 0) {
+                if (fechaSeleccionadaS.equals(fechaformateadahoyS)) {
+                    Toast.makeText(DetalleRestaurante.this, fechaSeleccionadaS + " " + fechaformateadahoyS, Toast.LENGTH_SHORT).show();
+                    int horaactual = Integer.parseInt(currentHour);
+                    if(horastdesayuno!=null) {
+                        String hourDesayunoString = horastdesayuno.get(horastdesayuno.size() - 1).split(":")[0];
+                        int ultimahorareservaDesayuno = Integer.parseInt(hourDesayunoString);
+
+                        if (ultimahorareservaDesayuno <= horaactual) {
+                            if (turnos.get(0).equals("Desayuno")) {
+                                turnos.remove(0);
+                            }
+                        }
+                    }
+
+                    if(horastcomida!=null){
+                        String hourComidaString = horastcomida.get(horastcomida.size() - 1).split(":")[0];
+                        int ultimahorareservaComida = Integer.parseInt(hourComidaString);
+
+                        if (ultimahorareservaComida <= horaactual) {
+                            Toast.makeText(DetalleRestaurante.this, horaactual + "  " + ultimahorareservaComida, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DetalleRestaurante.this, "0:" + turnos.get(0) + "  1:" + turnos.get(1), Toast.LENGTH_SHORT).show();
+                            if (turnos.get(0).equals("Comida")) {
+                                turnos.remove(0);
+                            } else if (turnos.get(1).equals("Comida")) {
+                                turnos.remove(1);
+                            }
+                        }
+                    }
+
+                    if(horastcena!=null){
+                        String hourCenaString = horastcena.get(horastcena.size() - 1).split(":")[0];
+                        int ultimahorareservaCena = Integer.parseInt(hourCenaString);
+
+
+
+                        if (ultimahorareservaCena <= horaactual) {
+                            myCalendarView.setMinDate(hoy + 86400000);
+                            rellenarSpinners(1);
+                        }
+
+                    }
+
+                }else{
+
+                }
+            }
                 spinnerTurno = (Spinner) findViewById(R.id.spinnerTurno);
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, turnos);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -135,6 +206,7 @@ public class DetalleRestaurante extends AppCompatActivity {
     }
 
     public void buscar(View view) {
+        if(!comensales.getText().toString().equals("")) {
         DatabaseReference restauranteRef = FirebaseDatabase.getInstance().getReference("Restaurantes").child(restaurante.getId());
 
         restauranteRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -173,49 +245,54 @@ public class DetalleRestaurante extends AppCompatActivity {
 
             }
         });
+        }else{
+            Toast.makeText(DetalleRestaurante.this, "Debes poner un numero de comensales", Toast.LENGTH_SHORT).show();
+        }
 
     }
 
     public void Reservar(View view) {
-        DatabaseReference restauranteRef = FirebaseDatabase.getInstance().getReference("Restaurantes").child(restaurante.getId());
 
-        restauranteRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot restauranteSnapshot) {
-                // Obtener los datos del restaurante del snapshot
-                GenericTypeIndicator<ArrayList<Reserva>> genericTypeIndicator = new GenericTypeIndicator<ArrayList<Reserva>>() {};
-                ArrayList<Reserva> reservas = restauranteSnapshot.child("reservas").getValue(genericTypeIndicator);
+            DatabaseReference restauranteRef = FirebaseDatabase.getInstance().getReference("Restaurantes").child(restaurante.getId());
 
-                if(reservas != null){
-                    String horaseleccionada = (String) spinnerHora.getSelectedItem();
-                    int comensalesTotales=0;
-                    for(Reserva reserva:reservas){
-                        if(reserva.getDia().equals(fechaSeleccionada)&&reserva.getHora().equals(horaseleccionada)){
-                            comensalesTotales=comensalesTotales+Integer.valueOf(reserva.getComensales());
+            restauranteRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot restauranteSnapshot) {
+                    // Obtener los datos del restaurante del snapshot
+                    GenericTypeIndicator<ArrayList<Reserva>> genericTypeIndicator = new GenericTypeIndicator<ArrayList<Reserva>>() {
+                    };
+                    ArrayList<Reserva> reservas = restauranteSnapshot.child("reservas").getValue(genericTypeIndicator);
+
+                    if (reservas != null) {
+                        String horaseleccionada = (String) spinnerHora.getSelectedItem();
+                        int comensalesTotales = 0;
+                        for (Reserva reserva : reservas) {
+                            if (reserva.getDia().equals(fechaSeleccionada) && reserva.getHora().equals(horaseleccionada)) {
+                                comensalesTotales = comensalesTotales + Integer.valueOf(reserva.getComensales());
+                            }
+                        }
+                        int comensalesReserva = Integer.parseInt(comensales.getText().toString());
+                        if ((comensalesReserva + comensalesTotales) <= restaurante.getComensales()) {
+                            hacerReserva();
+                        } else {
+                            Toast.makeText(DetalleRestaurante.this, "Lo sentimos pero no hay mesas disponibles en el turno seleccionado", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        if (Integer.valueOf(comensales.getText().toString()) > restaurante.getComensales()) {
+                            Toast.makeText(DetalleRestaurante.this, "Lo sentimos pero no hay mesas disponibles en el turno seleccionado", Toast.LENGTH_SHORT).show();
+                        } else {
+                            hacerReserva();
                         }
                     }
-                    int comensalesReserva= Integer.parseInt(comensales.getText().toString());
-                    if((comensalesReserva+comensalesTotales)<=restaurante.getComensales()) {
-                        hacerReserva();
-                    }else{
-                        Toast.makeText(DetalleRestaurante.this, "Lo sentimos pero no hay mesas disponibles en el turno seleccionado", Toast.LENGTH_SHORT).show();
-                    }
-                }else{
-                    if(Integer.valueOf(comensales.getText().toString())>restaurante.getComensales()){
-                        Toast.makeText(DetalleRestaurante.this, "Lo sentimos pero no hay mesas disponibles en el turno seleccionado", Toast.LENGTH_SHORT).show();
-                    }else{
-                        hacerReserva();
-                    }
+
+
                 }
 
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+                }
+            });
 
 
 
@@ -234,8 +311,10 @@ public class DetalleRestaurante extends AppCompatActivity {
         }else {
             id=restaurante.getReservas().size()+1;
         }
-        Reserva r = new Reserva(id,usuario.getId(),usuario.getNombreUsuario(), restaurante.getId(),restaurante.getNombre(), fechaSeleccionada, turnoseleccionado, horaseleccionada, Integer.valueOf(comensales.getText().toString()));
-        // Agregar la nueva reserva a la lista
+
+        Reserva r = new Reserva(id,usuario.getNombreUsuario(), restaurante.getId(),restaurante.getNombre(), fechaSeleccionada, turnoseleccionado, horaseleccionada, Integer.valueOf(comensales.getText().toString()));
+        r.setIdUsuario(usuario.getId());
+        Toast.makeText(DetalleRestaurante.this, r.getIdUsuario(), Toast.LENGTH_SHORT).show();
         restaurante.getReservas().add(r);
 
         // Guardar en Firebase

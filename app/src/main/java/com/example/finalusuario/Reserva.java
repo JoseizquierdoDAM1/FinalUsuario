@@ -20,9 +20,9 @@ public class Reserva implements Serializable {
 
 
 
-    public Reserva(int id,String idUsuario, String nombreUsuario, String idRestaurante, String restaurante, Date dia, String turno, String hora, int comensales) {
+    public Reserva(int id, String nombreUsuario, String idRestaurante, String restaurante, Date dia, String turno, String hora, int comensales) {
         this.id=id;
-        this.idUsuario=idUsuario;
+
         this.nombreUsuario = nombreUsuario;
         this.idRestaurante = idRestaurante;
         this.restaurante = restaurante;
@@ -31,6 +31,8 @@ public class Reserva implements Serializable {
         this.hora = hora;
         this.comensales = comensales;
     }
+
+
 
     public String getNombreUsuario() {
         return nombreUsuario;
@@ -96,5 +98,13 @@ public class Reserva implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(String idUsuario) {
+        this.idUsuario = idUsuario;
     }
 }

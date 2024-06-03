@@ -18,21 +18,20 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="50dp"
             android:layout_weight="1"
             android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="31dp"
-                android:layout_height="wrap_content"
+                android:layout_width="54dp"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
 
                 <ImageView
-                    android:id="@+id/imageView"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:id="@+id/imageViewmenuReseñas"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="16dp"
                     tools:srcCompat="@drawable/perfil" />
             </LinearLayout>
 
@@ -42,8 +41,8 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/textViewName"
-                    android:layout_width="158dp"
+                    android:id="@+id/textViewNameMenuReseñas"
+                    android:layout_width="144dp"
                     android:layout_height="match_parent"
                     android:paddingLeft="2dp"
                     android:text="Nombre"
@@ -52,12 +51,13 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/fecha"
+                    android:id="@+id/fechaMenuReseñas"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:text="12/02/2024"
                     android:textAlignment="viewEnd"
-                    android:textColor="#F8F4F4" />
+                    android:textColor="#F8F4F4"
+                    android:textSize="14dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -66,7 +66,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/textView5"
+                    android:id="@+id/textViewMenuReseñas"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -94,14 +94,14 @@
                     android:layout_height="wrap_content">
 
                     <ImageView
-                        android:id="@+id/evr1"
+                        android:id="@+id/evmr1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:visibility="visible"
                         app:srcCompat="@android:drawable/btn_star_big_off" />
 
                     <ImageView
-                        android:id="@+id/ellr1"
+                        android:id="@+id/ellmr1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:visibility="invisible"
@@ -120,14 +120,14 @@
                     android:layout_height="wrap_content">
 
                     <ImageView
-                        android:id="@+id/evr2"
+                        android:id="@+id/evmr2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:visibility="visible"
                         app:srcCompat="@android:drawable/btn_star_big_off" />
 
                     <ImageView
-                        android:id="@+id/ellr2"
+                        android:id="@+id/ellmr2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:visibility="invisible"
@@ -146,13 +146,13 @@
                     android:layout_height="wrap_content">
 
                     <ImageView
-                        android:id="@+id/evr3"
+                        android:id="@+id/evmr3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:srcCompat="@android:drawable/btn_star_big_off" />
 
                     <ImageView
-                        android:id="@+id/ellr3"
+                        android:id="@+id/ellmr3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:visibility="invisible"
@@ -171,13 +171,13 @@
                     android:layout_height="wrap_content">
 
                     <ImageView
-                        android:id="@+id/evr4"
+                        android:id="@+id/evmr4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:srcCompat="@android:drawable/btn_star_big_off" />
 
                     <ImageView
-                        android:id="@+id/ellr4"
+                        android:id="@+id/ellmr4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:visibility="invisible"
@@ -196,13 +196,13 @@
                     android:layout_height="wrap_content">
 
                     <ImageView
-                        android:id="@+id/evr5"
+                        android:id="@+id/evmr5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:srcCompat="@android:drawable/btn_star_big_off" />
 
                     <ImageView
-                        android:id="@+id/ellr5"
+                        android:id="@+id/ellmr5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:visibility="invisible"
@@ -236,11 +236,10 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textViewDescription"
+                android:id="@+id/descripcionmenureseñas"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="TextView"
-                android:textColor="#FAFAFA" />
+                android:text="TextView" />
         </LinearLayout>
 
     </LinearLayout>

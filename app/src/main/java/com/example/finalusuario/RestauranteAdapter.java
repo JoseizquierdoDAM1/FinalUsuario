@@ -13,7 +13,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -238,7 +237,7 @@ public class RestauranteAdapter extends RecyclerView.Adapter<RestauranteAdapter.
             button7 = itemView.findViewById(R.id.button7);
             EstrellaFavorito = itemView.findViewById(R.id.estrellaFavorito);
             EstrellaNoFavorito = itemView.findViewById(R.id.estrellaNoFavorito);
-            recyclerReseña = itemView.findViewById(R.id.recyclerreseñas);
+            recyclerReseña = itemView.findViewById(R.id.recyclermenuRestaurantesFavoritos);
             buttonreseñas=itemView.findViewById(R.id.buttonreseñas);
 
             ell1=itemView.findViewById(R.id.ell1);

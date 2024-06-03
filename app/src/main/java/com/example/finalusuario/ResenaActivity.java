@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -116,7 +117,9 @@ public class ResenaActivity extends AppCompatActivity {
                 }else{
                     id=reseñasRestaurante.size()+1;
                 }
-                Reseña reseña = new Reseña(id,idrestaurante,usuario.getNombreUsuario(),textoReseña.getText().toString(),numerodeEstrellas);
+                Calendar calendar = Calendar.getInstance();
+                Date currentDate = calendar.getTime();
+                Reseña reseña = new Reseña(id,usuario.getId(),idrestaurante,usuario.getNombreUsuario(),textoReseña.getText().toString(),numerodeEstrellas,currentDate);
 
                 reseñasRestaurante.add(reseña);
 

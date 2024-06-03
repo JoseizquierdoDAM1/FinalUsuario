@@ -53,9 +53,10 @@ public class RegistroUsuario extends AppCompatActivity {
 
                 if (!usuarioExistente) {
                     if (contraseña.getText().toString().equals(confirmarcontraseña.getText().toString())) {
+                        // Asignar el identificador único al restaurante
                         String id = usuariosRef.push().getKey();
                         // Asignar el identificador único al restaurante
-                        Usuario u = new Usuario(id,nombreUsuario, email.getText().toString(), contraseña.getText().toString(), dni.getText().toString(), " no dueño");
+                        Usuario u = new Usuario(id,nombreUsuario, email.getText().toString(), contraseña.getText().toString(), dni.getText().toString(), "no dueño");
                         usuariosRef.child(id).setValue(u);
                         error.setText("¡Usuario registrado exitosamente!");
                         error.setVisibility(View.VISIBLE);

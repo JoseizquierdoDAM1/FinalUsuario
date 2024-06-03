@@ -16,6 +16,17 @@
         android:theme="@style/Theme.FinalUsuario"
         tools:targetApi="31">
         <activity
+            android:name=".menuResenas"
+            android:exported="false" />
+        <activity
+            android:name=".menuRestaurantesFavoritos"
+            android:exported="false"
+            android:label="@string/title_activity_menu_restaurantes_favoritos"
+            android:theme="@style/Theme.FinalUsuario" />
+        <activity
+            android:name=".MainActivity2"
+            android:exported="false" />
+        <activity
             android:name=".menuReservas"
             android:exported="false" />
         <activity

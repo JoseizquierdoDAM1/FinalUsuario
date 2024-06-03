@@ -13,9 +13,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +55,41 @@ public class menuPerfil extends AppCompatActivity {
         usuario = (Usuario) intent.getSerializableExtra("usuario");
         mStorage = FirebaseStorage.getInstance().getReference();
         acceder();
+        menu();
+    }
+
+    public void menu() {
+        ImageView i = findViewById(R.id.imageView2);
+        i.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popup = new PopupMenu(v.getContext(), v);
+                popup.inflate(R.menu.menu_popup1);
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        if(item.getItemId()==R.id.action_reservas){
+                            Intent i= new Intent(menuPerfil.this, menuReservas.class);
+                            i.putExtra("usuario",usuario);
+                            startActivity(i);
+                        }
+                        if(item.getItemId()==R.id.action_reseñas){
+                            Intent i= new Intent(menuPerfil.this, menuResenas.class);
+                            i.putExtra("usuario",usuario);
+                            startActivity(i);
+                        }
+                        if(item.getItemId()==R.id.action_restFav){
+                            Intent i= new Intent(menuPerfil.this, menuRestaurantesFavoritos.class);
+                            i.putExtra("usuario",usuario);
+                            startActivity(i);
+                        }
+
+                        return true;
+                    }
+                });
+                popup.show();
+            }
+        });
     }
 
     public void acceder() {
@@ -262,6 +299,13 @@ public class menuPerfil extends AppCompatActivity {
             }
         });
 
+
+    }
+
+    public void principal(View view){
+        Intent i= new Intent(menuPerfil.this, VerRestaurantes.class);
+        i.putExtra("usuario",usuario);
+        startActivity(i);
 
     }
 }

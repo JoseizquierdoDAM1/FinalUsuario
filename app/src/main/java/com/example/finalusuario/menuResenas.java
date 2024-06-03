@@ -21,12 +21,13 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class menuReservas extends AppCompatActivity {
-Usuario usuario;
+public class menuResenas extends AppCompatActivity {
+    private Usuario usuario;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu_reservas);
+        setContentView(R.layout.activity_menu_resenas);
+
         Intent intent = getIntent();
         usuario = (Usuario) intent.getSerializableExtra("usuario");
         cargar();
@@ -39,23 +40,23 @@ Usuario usuario;
             @Override
             public void onClick(View v) {
                 PopupMenu popup = new PopupMenu(v.getContext(), v);
-                popup.inflate(R.menu.menu_popup4);
+                popup.inflate(R.menu.menu_popup3);
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         if(item.getItemId()==R.id.action_perfil){
-                            Intent i= new Intent(menuReservas.this, menuPerfil.class);
+                            Intent i= new Intent(menuResenas.this, menuPerfil.class);
+                            i.putExtra("usuario",usuario);
+                            startActivity(i);
+                        }
+                        if(item.getItemId()==R.id.action_reservas){
+                            Intent i= new Intent(menuResenas.this, menuReservas.class);
                             i.putExtra("usuario",usuario);
                             startActivity(i);
                         }
 
-                        if(item.getItemId()==R.id.action_reseñas){
-                            Intent i= new Intent(menuReservas.this, menuResenas.class);
-                            i.putExtra("usuario",usuario);
-                            startActivity(i);
-                        }
                         if(item.getItemId()==R.id.action_restFav){
-                            Intent i= new Intent(menuReservas.this, menuRestaurantesFavoritos.class);
+                            Intent i= new Intent(menuResenas.this, menuRestaurantesFavoritos.class);
                             i.putExtra("usuario",usuario);
                             startActivity(i);
                         }
@@ -74,31 +75,29 @@ Usuario usuario;
         restaurantesRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                ArrayList<Reserva> reservasUsuario = new ArrayList<>();
-
+                ArrayList<Reseña> reseñasUsuario = new ArrayList<>();
+                ArrayList<Reseña> todasreseñas = new ArrayList<>();
                 for (DataSnapshot restauranteSnapshot : dataSnapshot.getChildren()) {
-                    ArrayList<Reserva> reservasRestaurante = restauranteSnapshot.child("reservas").getValue(new GenericTypeIndicator<ArrayList<Reserva>>() {});
+                    GenericTypeIndicator<ArrayList<Reseña>> genericTypeIndicator2 = new GenericTypeIndicator<ArrayList<Reseña>>() {};
+                    ArrayList<Reseña> reseñas = restauranteSnapshot.child("reseñas").getValue(genericTypeIndicator2);
+                    if(reseñas!=null){
+                    for(Reseña r:reseñas){
+                       todasreseñas.add(r);
+                    }}
+                }
 
-                    if (reservasRestaurante != null) {
-                        for (Reserva r : reservasRestaurante) {
-                            if (r.getNombreUsuario().equals(usuario.getNombreUsuario())) {
-                                reservasUsuario.add(r);
-                            }
-                        }
+                for(Reseña r:todasreseñas){
+                    if(r.getIdUsuario().equals(usuario.getId())){
+                        reseñasUsuario.add(r);
                     }
                 }
-
-                if (!reservasUsuario.isEmpty()) {
-                    Toast.makeText(menuReservas.this, "Hay reservas", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(menuReservas.this, "No hay reservas", Toast.LENGTH_SHORT).show();
+                if(reseñasUsuario!=null) {
+                    RecyclerView recyclerView = findViewById(R.id.recyclerReseñasMenu);
+                    ReseñaMenuAdapter adapter = new ReseñaMenuAdapter(getApplicationContext(), reseñasUsuario);
+                    recyclerView.addItemDecoration(new SpaceItemDecoration(70));
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                    recyclerView.setAdapter(adapter);
                 }
-
-                RecyclerView recyclerView = findViewById(R.id.recyclerMenuReservas);
-                ReservasMenuAdapter adapter = new ReservasMenuAdapter(menuReservas.this, reservasUsuario); // Cambiado a menuReservas.this
-                recyclerView.addItemDecoration(new SpaceItemDecoration(50));
-                recyclerView.setLayoutManager(new LinearLayoutManager(menuReservas.this));
-                recyclerView.setAdapter(adapter);
             }
 
             @Override
@@ -109,10 +108,9 @@ Usuario usuario;
     }
 
     public void principal(View view){
-        Intent i= new Intent(menuReservas.this, VerRestaurantes.class);
+        Intent i= new Intent(menuResenas.this, VerRestaurantes.class);
         i.putExtra("usuario",usuario);
         startActivity(i);
 
     }
-
 }

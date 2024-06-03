@@ -12,8 +12,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,12 +25,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 
@@ -44,11 +49,239 @@ public class VerRestaurantes extends AppCompatActivity {
         t.setText("Bienvenido " + usuario.getNombreUsuario());
         menu();
         reseña();
-        cargar();
+        cargar(70);
         verNotificaciones();
+        rellenarSpinnerComunidades();
+    }
+
+    public void rellenarSpinnerComunidades(){
+        final ArrayList<String>[] nombresComunidades = new ArrayList[]{new ArrayList<>()};
+
+// Obtener la referencia al nodo "comunidades" en la base de datos
+        DatabaseReference restaurantesRef = FirebaseDatabase.getInstance().getReference("Restaurantes");
+
+        restaurantesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Iterar sobre los datos dentro del nodo "comunidades"
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    // Obtener el nombre de cada comunidad
+                    String comunidadaAutonoma = snapshot.child("comunidadaAutonoma").getValue(String.class);
+
+                        nombresComunidades[0].add(comunidadaAutonoma);
+
+
+                }
+
+                nombresComunidades[0] = new ArrayList<>(new LinkedHashSet<>(nombresComunidades[0]));
+                Spinner spinnerComunidades = findViewById(R.id.spinercomunidadesmain);
+
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(VerRestaurantes.this, android.R.layout.simple_spinner_item, nombresComunidades[0]);
+
+
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+
+                spinnerComunidades.setAdapter(adapter);
+
+
+                spinnerComunidades.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                        // Obtener el nombre de la comunidad seleccionada
+                        String comunidadSeleccionada = nombresComunidades[0].get(position);
+
+                        // Llamar al método provincias y pasar el nombre de la comunidad como argumento
+
+                        rellenarSpinnerProvincias(comunidadSeleccionada);
+
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+                        // Manejar el caso en el que no se seleccione ninguna comunidad
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Manejar errores
+            }
+        });
+
+    }
 
 
 
+    public void rellenarSpinnerProvincias(String comunidad){
+        final ArrayList<String>[] nombresProvincias = new ArrayList[]{new ArrayList<>()};
+
+// Obtener la referencia al nodo "comunidades" en la base de datos
+        DatabaseReference restaurantesRef = FirebaseDatabase.getInstance().getReference("Restaurantes");
+
+// Consulta para obtener restaurantes donde la comunidad sea "Madrid"
+        Query query = restaurantesRef.orderByChild("comunidadaAutonoma").equalTo(comunidad);
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Iterar sobre los datos dentro del nodo "comunidades"
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    // Obtener el nombre de cada comunidad
+                    String provincia = snapshot.child("provincia").getValue(String.class);
+
+                    nombresProvincias[0].add(provincia);
+                }
+
+                nombresProvincias[0] =new ArrayList<>(new LinkedHashSet<>(nombresProvincias[0]));
+
+
+                Spinner  spinnerprovincias = findViewById(R.id.spinerprovinciasmain);
+
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(VerRestaurantes.this, android.R.layout.simple_spinner_item, nombresProvincias[0]);
+
+
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+
+                spinnerprovincias.setAdapter(adapter);
+
+
+                spinnerprovincias.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                        // Obtener el nombre de la comunidad seleccionada
+                        String provinciaSeleccionada = nombresProvincias[0].get(position);
+
+                        // Llamar al método provincias y pasar el nombre de la comunidad como argumento
+                        rellenarSpinnerCiudad(provinciaSeleccionada);
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+                        // Manejar el caso en el que no se seleccione ninguna comunidad
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Manejar errores
+            }
+        });
+    }
+
+    public void rellenarSpinnerCiudad(String provincia){
+        final ArrayList<String>[] nombresCiudades = new ArrayList[]{new ArrayList<>()};
+
+// Obtener la referencia al nodo "comunidades" en la base de datos
+        DatabaseReference restaurantesRef = FirebaseDatabase.getInstance().getReference("Restaurantes");
+
+// Consulta para obtener restaurantes donde la comunidad sea "Madrid"
+        Query query = restaurantesRef.orderByChild("provincia").equalTo(provincia);
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Iterar sobre los datos dentro del nodo "comunidades"
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    // Obtener el nombre de cada comunidad
+                    String ciudad = snapshot.child("ciudad").getValue(String.class);
+
+                    nombresCiudades[0].add(ciudad);
+                }
+
+                nombresCiudades[0] =new ArrayList<>(new LinkedHashSet<>(nombresCiudades[0]));
+
+
+                Spinner  spinerciudades = findViewById(R.id.spinerciudadesmain);
+
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(VerRestaurantes.this, android.R.layout.simple_spinner_item, nombresCiudades[0]);
+
+
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+
+                spinerciudades.setAdapter(adapter);
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Manejar errores
+            }
+        });
+    }
+
+
+    public void Filtrar(View view){
+        Spinner ciudades =findViewById(R.id.spinerciudadesmain);
+        DatabaseReference restaurantesRef = FirebaseDatabase.getInstance().getReference("Restaurantes");
+        String ciudadS= (String) ciudades.getSelectedItem();
+        Query query = restaurantesRef.orderByChild("ciudad").equalTo(ciudadS);
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ArrayList<Restaurante> restaurantes = new ArrayList<>();
+                for (DataSnapshot restauranteSnapshot : dataSnapshot.getChildren()) {
+                    String id = restauranteSnapshot.child("id").getValue(String.class);
+                    String nombre = restauranteSnapshot.child("nombre").getValue(String.class);
+                    String tipo = restauranteSnapshot.child("tipo").getValue(String.class);
+                    String dniUsuario = restauranteSnapshot.child("dniUsuario").getValue(String.class);
+                    String imageUrl = restauranteSnapshot.child("imagen").getValue(String.class);
+                    int valoracion= restauranteSnapshot.child("valoracion").getValue(Integer.class);
+                    String comunidadaAutonoma = restauranteSnapshot.child("comunidadaAutonoma").getValue(String.class);
+                    String provincia = restauranteSnapshot.child("provincia").getValue(String.class);
+                    String ciudad = restauranteSnapshot.child("ciudad").getValue(String.class);
+                    GenericTypeIndicator<ArrayList<Reserva>> genericTypeIndicator = new GenericTypeIndicator<ArrayList<Reserva>>() {};
+                    ArrayList<Reserva> reservas = restauranteSnapshot.child("reservas").getValue(genericTypeIndicator);
+
+                    GenericTypeIndicator<ArrayList<Reseña>> genericTypeIndicator2 = new GenericTypeIndicator<ArrayList<Reseña>>() {};
+                    ArrayList<Reseña> reseñas = restauranteSnapshot.child("reseñas").getValue(genericTypeIndicator2);
+
+                    int comensales = restauranteSnapshot.child("comensales").getValue(Integer.class);
+
+                    Restaurante r = new Restaurante(id, nombre, tipo,comunidadaAutonoma,provincia, ciudad, dniUsuario, imageUrl, comensales, reservas,reseñas,valoracion);
+                        restaurantes.add(r);
+
+                }
+
+                if(restaurantes!=null) {
+                    RecyclerView recyclerView = findViewById(R.id.recyclermenuRestaurantesFavoritos);
+                    RestauranteAdapter adapter = new RestauranteAdapter(getApplicationContext(), restaurantes, usuario);
+                    adapter.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            int position = recyclerView.getChildAdapterPosition(view);
+                            Restaurante restaurante = restaurantes.get(position);
+
+                            Intent intent = new Intent(VerRestaurantes.this, DetalleRestaurante.class);
+                            intent.putExtra("restaurante", restaurante);
+                            intent.putExtra("usuario", usuario);
+                            startActivity(intent);
+                        }
+                    });
+
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                    recyclerView.setAdapter(adapter);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Manejar errores de Firebase
+            }
+        });
+
+    }
+
+    public void eliminarFiltros(View view){
+        cargar(0);
     }
 
     public void menu() {
@@ -71,8 +304,16 @@ public class VerRestaurantes extends AppCompatActivity {
                             i.putExtra("usuario",usuario);
                             startActivity(i);
                         }
-                        if(item.getItemId()==R.id.action_reseñas){}
-                        if(item.getItemId()==R.id.action_restFav){}
+                        if(item.getItemId()==R.id.action_reseñas){
+                            Intent i= new Intent(VerRestaurantes.this, menuResenas.class);
+                            i.putExtra("usuario",usuario);
+                            startActivity(i);
+                        }
+                        if(item.getItemId()==R.id.action_restFav){
+                            Intent i= new Intent(VerRestaurantes.this, menuRestaurantesFavoritos.class);
+                            i.putExtra("usuario",usuario);
+                            startActivity(i);
+                        }
 
                         return true;
                     }
@@ -81,7 +322,7 @@ public class VerRestaurantes extends AppCompatActivity {
             }
         });
     }
-    public void cargar() {
+    public void cargar(int espacio) {
         DatabaseReference restaurantesRef = FirebaseDatabase.getInstance().getReference("Restaurantes");
 
         restaurantesRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -96,7 +337,6 @@ public class VerRestaurantes extends AppCompatActivity {
                     String dniUsuario = restauranteSnapshot.child("dniUsuario").getValue(String.class);
                     String imageUrl = restauranteSnapshot.child("imagen").getValue(String.class);
                     int valoracion= restauranteSnapshot.child("valoracion").getValue(Integer.class);
-
                     GenericTypeIndicator<ArrayList<Reserva>> genericTypeIndicator = new GenericTypeIndicator<ArrayList<Reserva>>() {};
                     ArrayList<Reserva> reservas = restauranteSnapshot.child("reservas").getValue(genericTypeIndicator);
 
@@ -109,8 +349,9 @@ public class VerRestaurantes extends AppCompatActivity {
                     restaurantes.add(r);
 
                 }
-                RecyclerView recyclerView = findViewById(R.id.recyclerreseñas);
+                RecyclerView recyclerView = findViewById(R.id.recyclermenuRestaurantesFavoritos);
                 RestauranteAdapter adapter = new RestauranteAdapter(getApplicationContext(), restaurantes,usuario);
+                recyclerView.addItemDecoration(new SpaceItemDecoration(espacio));
                 adapter.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -282,6 +523,7 @@ public class VerRestaurantes extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 GenericTypeIndicator<ArrayList<Reserva>> genericTypeIndicator = new GenericTypeIndicator<ArrayList<Reserva>>() {};
                 ArrayList<Reserva> reservasRestaurante = dataSnapshot.getValue(genericTypeIndicator);
+
 
                 if (reservasRestaurante != null) {
                     ArrayList<Reserva> reservasActualizadas = new ArrayList<>();

@@ -8,6 +8,9 @@ public class Restaurante implements Serializable{
     private String id;
     private String nombre;
     private String tipo;
+
+    private String comunidadaAutonoma;
+    private String provincia;
     private String ciudad;
     private String dniUsuario;
     private String imagen;
@@ -63,6 +66,35 @@ public class Restaurante implements Serializable{
         this.reseñas=reseñas;
         this.valoracion=valoracion;
     }
+
+    public Restaurante(String id, String nombre, String tipo,String comunidadaAutonoma,String provincia, String ciudad, String dniUsuario, String imagen, int comensales, int valoracion) {
+        this.id = id;
+        this.nombre = nombre;
+        this.tipo = tipo;
+        this.comunidadaAutonoma=comunidadaAutonoma;
+        this.provincia=provincia;
+        this.ciudad = ciudad;
+        this.dniUsuario = dniUsuario;
+        this.imagen = imagen;
+        Comensales = comensales;
+        this.valoracion=valoracion;
+    }
+
+    public Restaurante(String id, String nombre, String tipo, String comunidadaAutonoma, String provincia, String ciudad, String dniUsuario, String imageUrl, int comensales, ArrayList<Reserva> reservas, ArrayList<Reseña> reseñas, int valoracion) {
+        this.id = id;
+        this.nombre = nombre;
+        this.tipo = tipo;
+        this.comunidadaAutonoma=comunidadaAutonoma;
+        this.provincia=provincia;
+        this.ciudad = ciudad;
+        this.dniUsuario = dniUsuario;
+        this.imagen = imageUrl;
+        Comensales = comensales;
+        this.reservas = reservas;
+        this.reseñas=reseñas;
+        this.valoracion=valoracion;
+    }
+
 
     public  String getId(){return id;}
 
@@ -171,5 +203,21 @@ public class Restaurante implements Serializable{
 
     public void setValoracion(int valoracion) {
         this.valoracion = valoracion;
+    }
+
+    public String getComunidadaAutonoma() {
+        return comunidadaAutonoma;
+    }
+
+    public void setComunidadaAutonoma(String comunidadaAutonoma) {
+        this.comunidadaAutonoma = comunidadaAutonoma;
+    }
+
+    public String getProvincia() {
+        return provincia;
+    }
+
+    public void setProvincia(String provincia) {
+        this.provincia = provincia;
     }
 }

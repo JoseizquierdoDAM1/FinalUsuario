@@ -1,5 +1,6 @@
 package com.example.finalusuario;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,7 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
-import android.widget.Toast;
+
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,41 +22,40 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class menuReservas extends AppCompatActivity {
-Usuario usuario;
+
+public class menuRestaurantesFavoritos extends AppCompatActivity {
+    private Usuario usuario;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu_reservas);
+        setContentView(R.layout.activity_menu_restaurantes_favoritos);
         Intent intent = getIntent();
         usuario = (Usuario) intent.getSerializableExtra("usuario");
-        cargar();
         menu();
+        cargar();
     }
-
     public void menu() {
         ImageView i = findViewById(R.id.imageView2);
         i.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 PopupMenu popup = new PopupMenu(v.getContext(), v);
-                popup.inflate(R.menu.menu_popup4);
+                popup.inflate(R.menu.menu_popup2);
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         if(item.getItemId()==R.id.action_perfil){
-                            Intent i= new Intent(menuReservas.this, menuPerfil.class);
+                            Intent i= new Intent(menuRestaurantesFavoritos.this, menuPerfil.class);
                             i.putExtra("usuario",usuario);
                             startActivity(i);
                         }
-
+                        if(item.getItemId()==R.id.action_reservas){
+                            Intent i= new Intent(menuRestaurantesFavoritos.this, menuReservas.class);
+                            i.putExtra("usuario",usuario);
+                            startActivity(i);
+                        }
                         if(item.getItemId()==R.id.action_reseñas){
-                            Intent i= new Intent(menuReservas.this, menuResenas.class);
-                            i.putExtra("usuario",usuario);
-                            startActivity(i);
-                        }
-                        if(item.getItemId()==R.id.action_restFav){
-                            Intent i= new Intent(menuReservas.this, menuRestaurantesFavoritos.class);
+                            Intent i= new Intent(menuRestaurantesFavoritos.this, menuResenas.class);
                             i.putExtra("usuario",usuario);
                             startActivity(i);
                         }
@@ -69,36 +69,20 @@ Usuario usuario;
     }
 
     public void cargar() {
-        DatabaseReference restaurantesRef = FirebaseDatabase.getInstance().getReference("Restaurantes");
+        DatabaseReference restaurantesRef = FirebaseDatabase.getInstance().getReference("Usuarios").child(usuario.getId());
 
         restaurantesRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                ArrayList<Reserva> reservasUsuario = new ArrayList<>();
+                GenericTypeIndicator<ArrayList<Restaurante>> genericTypeIndicator2 = new GenericTypeIndicator<ArrayList<Restaurante>>() {};
+                ArrayList<Restaurante> restaurantes = dataSnapshot.child("restaurantesFavoritos").getValue(genericTypeIndicator2);
 
-                for (DataSnapshot restauranteSnapshot : dataSnapshot.getChildren()) {
-                    ArrayList<Reserva> reservasRestaurante = restauranteSnapshot.child("reservas").getValue(new GenericTypeIndicator<ArrayList<Reserva>>() {});
-
-                    if (reservasRestaurante != null) {
-                        for (Reserva r : reservasRestaurante) {
-                            if (r.getNombreUsuario().equals(usuario.getNombreUsuario())) {
-                                reservasUsuario.add(r);
-                            }
-                        }
-                    }
-                }
-
-                if (!reservasUsuario.isEmpty()) {
-                    Toast.makeText(menuReservas.this, "Hay reservas", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(menuReservas.this, "No hay reservas", Toast.LENGTH_SHORT).show();
-                }
-
-                RecyclerView recyclerView = findViewById(R.id.recyclerMenuReservas);
-                ReservasMenuAdapter adapter = new ReservasMenuAdapter(menuReservas.this, reservasUsuario); // Cambiado a menuReservas.this
-                recyclerView.addItemDecoration(new SpaceItemDecoration(50));
-                recyclerView.setLayoutManager(new LinearLayoutManager(menuReservas.this));
-                recyclerView.setAdapter(adapter);
+                if(restaurantes!=null){
+                RecyclerView recyclerView = findViewById(R.id.recyclermenuRestaurantesFavoritos);
+                RestauranteAdapter adapter = new RestauranteAdapter(getApplicationContext(), restaurantes,usuario);
+                recyclerView.addItemDecoration(new SpaceItemDecoration(70));
+                recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                recyclerView.setAdapter(adapter);}
             }
 
             @Override
@@ -109,10 +93,9 @@ Usuario usuario;
     }
 
     public void principal(View view){
-        Intent i= new Intent(menuReservas.this, VerRestaurantes.class);
+        Intent i= new Intent(menuRestaurantesFavoritos.this, VerRestaurantes.class);
         i.putExtra("usuario",usuario);
         startActivity(i);
 
     }
-
 }
