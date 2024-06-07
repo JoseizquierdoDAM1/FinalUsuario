@@ -179,6 +179,8 @@ public class DetalleRestaurante extends AppCompatActivity {
 
 
                         if (ultimahorareservaCena <= horaactual) {
+                            Date fecha = new Date(hoy+ 86400000);
+                            fechaSeleccionada=fecha ;
                             myCalendarView.setMinDate(hoy + 86400000);
                             rellenarSpinners(1);
                         }
@@ -206,6 +208,10 @@ public class DetalleRestaurante extends AppCompatActivity {
     }
 
     public void buscar(View view) {
+        Calendar calendar = Calendar.getInstance();
+        // Convertir la hora a una cadena si es necesario
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:00");
+        String currentHour = sdf.format(calendar.getTime());
         if(!comensales.getText().toString().equals("")) {
         DatabaseReference restauranteRef = FirebaseDatabase.getInstance().getReference("Restaurantes").child(restaurante.getId());
 
@@ -219,17 +225,66 @@ public class DetalleRestaurante extends AppCompatActivity {
                 ArrayList<String> horastcomida = restauranteSnapshot.child("horastcomida").getValue(genericTypeIndicator);
                 ArrayList<String> horastcena= restauranteSnapshot.child("horastcena").getValue(genericTypeIndicator);
 
+                ArrayList<String>hd= new ArrayList<>();
+                int i=0;
+                if(horastdesayuno!=null) {
+                    for (String s : horastdesayuno) {
+                        if (i == 1) {
+                            hd.add(s);
+                        }
+                        if (s.equals(currentHour)) {
+                            i = 1;
+                        }
+                    }
+                }
 
+                ArrayList<String> hc = new ArrayList<>();
+                if(horastcomida!=null) {
+                    int i2 = 0;
+                    for (String s : horastcomida) {
+                        if (i2 == 1) {
+                            hc.add(s);
+                        }
+                        if (s.equals(currentHour)) {
+                            i2 = 1;
+                        }
+                    }
+                }
+                ArrayList<String> hce = new ArrayList<>();
+                if(horastcena!=null) {
+                    int i3 = 0;
+                    for (String s : horastcena) {
+                        if (i3 == 1) {
+                            hce.add(s);
+                        }
+                        if (s.equals(currentHour)) {
+                            i3 = 1;
+                        }
+                    }
+                }
                 spinnerHora = (Spinner) findViewById(R.id.spinnerHora);
                 ArrayAdapter<String> adapter=null;
                 if(spinnerTurno.getSelectedItem().toString().equals("Desayuno")){
-                   adapter= new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, horastdesayuno);
+                    if(hd.size()==0) {
+                        adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, horastdesayuno);
+                    }else{
+                        adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, hd);
+                    }
                 }
                 if(spinnerTurno.getSelectedItem().toString().equals("Comida")){
-                    adapter= new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, horastcomida);
+                    if(hc.size()==0){
+                        adapter= new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, horastcomida);
+                    }else{
+                        adapter= new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, hc);
+                    }
+
                 }
                 if(spinnerTurno.getSelectedItem().toString().equals("Cena")){
-                    adapter= new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, horastcena);
+                    if(hce.size()==0){
+                        adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, horastcena);
+                    }else {
+                        adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, hce);
+                    }
                 }
 
 

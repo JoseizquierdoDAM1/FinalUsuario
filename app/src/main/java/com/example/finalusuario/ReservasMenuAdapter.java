@@ -40,11 +40,13 @@ public class ReservasMenuAdapter extends RecyclerView.Adapter<ReservasMenuAdapte
 
     Context activityContext;
     private List<Reserva> reservas;
+    private String tiporecycler;
 
     // Constructor del adaptador
-    public ReservasMenuAdapter(Context activityContext, List<Reserva> reservas) {
+    public ReservasMenuAdapter(Context activityContext, List<Reserva> reservas,String tiporecycler) {
         this.activityContext = activityContext;
         this.reservas = reservas;
+        this.tiporecycler=tiporecycler;
     }
 
     @NonNull
@@ -82,29 +84,34 @@ public class ReservasMenuAdapter extends RecyclerView.Adapter<ReservasMenuAdapte
             }
         });
 
-        holder.eliminar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder dialogo1 = new AlertDialog.Builder(activityContext); // Cambiado a activityContext
-                dialogo1.setTitle("Alerta");
-                dialogo1.setMessage("¿ Quieres eliminar esta reserva ?");
-                dialogo1.setCancelable(false);
-                dialogo1.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialogo1, int id) {
-                        reservas.remove(reserva);
-                        guardarReservas(reserva.getIdRestaurante(), reservas);
-                        guardarMensaje(reserva);
-                        notifyDataSetChanged(); // Actualiza el RecyclerView
-                    }
-                });
-                dialogo1.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialogo1, int id) {
-                        dialogo1.dismiss();
-                    }
-                });
-                dialogo1.show();
-            }
-        });
+        if(tiporecycler.equals("reservas")) {
+            holder.eliminar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AlertDialog.Builder dialogo1 = new AlertDialog.Builder(activityContext); // Cambiado a activityContext
+                    dialogo1.setTitle("Alerta");
+                    dialogo1.setMessage("¿ Quieres eliminar esta reserva ?");
+                    dialogo1.setCancelable(false);
+                    dialogo1.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialogo1, int id) {
+                            guardarHistorial(reserva);
+                            reservas.remove(reserva);
+                            guardarReservas(reserva.getIdRestaurante(), reservas);
+                            guardarMensaje(reserva);
+                            notifyDataSetChanged(); // Actualiza el RecyclerView
+                        }
+                    });
+                    dialogo1.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialogo1, int id) {
+                            dialogo1.dismiss();
+                        }
+                    });
+                    dialogo1.show();
+                }
+            });
+        }else{
+            holder.eliminar.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -131,9 +138,48 @@ public class ReservasMenuAdapter extends RecyclerView.Adapter<ReservasMenuAdapte
         DatabaseReference restauranteRef = FirebaseDatabase.getInstance().getReference("Restaurantes").child(idRestaurante);
         restauranteRef.child("reservas").setValue(reservas);
     }
+    public void guardarHistorial(Reserva reserva) {
+        String idRestaurante = reserva.getIdRestaurante();
+        if (idRestaurante == null || idRestaurante.isEmpty()) {
+            Toast.makeText(activityContext, "ID de restaurante no válido", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        DatabaseReference restaurantesRef = FirebaseDatabase.getInstance().getReference("Restaurantes").child(idRestaurante);
+
+        restaurantesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                GenericTypeIndicator<ArrayList<Reserva>> genericTypeIndicator = new GenericTypeIndicator<ArrayList<Reserva>>() {};
+                List<Reserva> reservas = snapshot.child("historialReservas").getValue(genericTypeIndicator);
+                if (reservas == null) {
+                    Toast.makeText(activityContext, "Reservas es null", Toast.LENGTH_SHORT).show();
+                    reservas = new ArrayList<>();
+                }
+                reservas.add(reserva);
+                Toast.makeText(activityContext, "Después: " + reservas.size(), Toast.LENGTH_SHORT).show();
+
+                // Asegúrate de que la referencia del nodo es la correcta
+                DatabaseReference restauranteRef = FirebaseDatabase.getInstance().getReference("Restaurantes").child(idRestaurante);
+                restauranteRef.child("historialReservas").setValue(reservas).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(activityContext, "Historial guardado correctamente", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(activityContext, "Error al guardar historial", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(activityContext, "Error en la consulta: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 
     public void guardarMensaje(Reserva r) {
-        DatabaseReference usuariosRef = FirebaseDatabase.getInstance().getReference("Usuarios").child(r.getNombreUsuario());
+        DatabaseReference usuariosRef = FirebaseDatabase.getInstance().getReference("Usuarios").child(r.getIdUsuario());
 
         usuariosRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

@@ -13,7 +13,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="184dp"
+            android:layout_height="223dp"
             android:layout_weight="1"
             android:orientation="vertical">
 
@@ -110,7 +110,42 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="305dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="2"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAlignment="center">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/verHistorialReservas"
+                    android:layout_width="186dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="80dp"
+                    android:background="@drawable/rounded_button"
+                    android:onClick="HistorialReserva"
+                    android:text="Historial de reservas"
+                    android:textColor="#FFFFFF" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/reservas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="130dp"
+                    android:background="@drawable/rounded_button"
+                    android:onClick="reservas"
+                    android:text="Reservas"
+                    android:textColor="#FFFFFF"
+                    android:visibility="invisible" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="723dp"
             android:layout_weight="1"
             android:orientation="vertical">
 

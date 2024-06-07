@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
@@ -22,14 +23,18 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class menuReservas extends AppCompatActivity {
-Usuario usuario;
+    private Usuario usuario;
+    private Button reservas;
+    private Button Historialreservas;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_reservas);
         Intent intent = getIntent();
         usuario = (Usuario) intent.getSerializableExtra("usuario");
-        cargar();
+        reservas=findViewById(R.id.reservas);
+        Historialreservas=findViewById(R.id.verHistorialReservas);
+        cargar("reservas",50);
         menu();
     }
 
@@ -68,7 +73,7 @@ Usuario usuario;
         });
     }
 
-    public void cargar() {
+    public void cargar(String tipo,int valor) {
         DatabaseReference restaurantesRef = FirebaseDatabase.getInstance().getReference("Restaurantes");
 
         restaurantesRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -77,7 +82,7 @@ Usuario usuario;
                 ArrayList<Reserva> reservasUsuario = new ArrayList<>();
 
                 for (DataSnapshot restauranteSnapshot : dataSnapshot.getChildren()) {
-                    ArrayList<Reserva> reservasRestaurante = restauranteSnapshot.child("reservas").getValue(new GenericTypeIndicator<ArrayList<Reserva>>() {});
+                    ArrayList<Reserva> reservasRestaurante = restauranteSnapshot.child(tipo).getValue(new GenericTypeIndicator<ArrayList<Reserva>>() {});
 
                     if (reservasRestaurante != null) {
                         for (Reserva r : reservasRestaurante) {
@@ -95,8 +100,8 @@ Usuario usuario;
                 }
 
                 RecyclerView recyclerView = findViewById(R.id.recyclerMenuReservas);
-                ReservasMenuAdapter adapter = new ReservasMenuAdapter(menuReservas.this, reservasUsuario); // Cambiado a menuReservas.this
-                recyclerView.addItemDecoration(new SpaceItemDecoration(50));
+                ReservasMenuAdapter adapter = new ReservasMenuAdapter(menuReservas.this, reservasUsuario,tipo); // Cambiado a menuReservas.this
+                recyclerView.addItemDecoration(new SpaceItemDecoration(valor));
                 recyclerView.setLayoutManager(new LinearLayoutManager(menuReservas.this));
                 recyclerView.setAdapter(adapter);
             }
@@ -106,6 +111,18 @@ Usuario usuario;
                 // Manejar errores de Firebase
             }
         });
+    }
+
+    public void reservas(View view) {
+        reservas.setVisibility(View.INVISIBLE);
+        Historialreservas.setVisibility(View.VISIBLE);
+        cargar("reservas",0);
+    }
+
+    public void HistorialReserva(View view) {
+        reservas.setVisibility(View.VISIBLE);
+        Historialreservas.setVisibility(View.INVISIBLE);
+        cargar("historialReservas",0);
     }
 
     public void principal(View view){

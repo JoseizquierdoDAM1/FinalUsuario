@@ -13,8 +13,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="89dp"
-            android:layout_weight="1"
+            android:layout_height="100dp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -45,8 +44,8 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:layout_alignParentBottom="true"
-                            android:layout_marginEnd="32dp"
-                            android:layout_marginBottom="4dp"
+                            android:layout_marginEnd="33dp"
+                            android:layout_marginBottom="15dp"
                             android:shadowColor="#FFFFFF"
                             android:text="TextView"
                             android:textColor="#FFFFFF" />
@@ -110,112 +109,111 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/layoutentero"
             android:layout_width="match_parent"
-            android:layout_height="25dp"
-            android:layout_marginTop="5dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
+            android:layout_height="45dp"
+            android:orientation="vertical">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <Spinner
-                    android:id="@+id/spinercomunidadesmain"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/rounded_corners" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <Spinner
-                    android:id="@+id/spinerprovinciasmain"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/rounded_corners" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <Spinner
-                    android:id="@+id/spinerciudadesmain"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/rounded_corners" />
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="25dp"
-            android:layout_marginTop="5dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:layout_weight="1">
 
                 <LinearLayout
+                    android:id="@+id/layoutItems"
                     android:layout_width="match_parent"
-                    android:layout_height="26dp"
+                    android:layout_height="25dp"
+                    android:layout_marginTop="5dp"
                     android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:orientation="horizontal"
+                    android:visibility="invisible">
 
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/button3"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="27dp"
-                        android:background="@drawable/rounded_button"
-                        android:onClick="Filtrar"
-                        android:text="Filtrar"
-                        android:textColor="#FFFFFF" />
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <Spinner
+                            android:id="@+id/spinercomunidadesmain"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/rounded_corners" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <Spinner
+                            android:id="@+id/spinerprovinciasmain"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/rounded_corners" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <Spinner
+                            android:id="@+id/spinerciudadesmain"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/rounded_corners" />
+                    </LinearLayout>
+
                 </LinearLayout>
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1.8"
-                android:orientation="vertical"></LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/button5"
+                <LinearLayout
+                    android:id="@+id/layoutBotones"
                     android:layout_width="match_parent"
-                    android:layout_height="27dp"
-                    android:background="@drawable/rounded_button"
-                    android:onClick="eliminarFiltros"
-                    android:text="Eliminar Filtros"
-                    android:textColor="#FFFFFF"
-                    android:visibility="visible" />
-            </LinearLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/button3"
+                            android:layout_width="150dp"
+                            android:layout_height="27dp"
+                            android:layout_marginLeft="100dp"
+                            android:background="@drawable/rounded_button"
+                            android:onClick="Filtrar"
+                            android:text="Filtrar"
+                            android:textColor="#FFFFFF" />
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/button5"
+                            android:layout_width="150dp"
+                            android:layout_height="27dp"
+                            android:layout_marginLeft="190dp"
+                            android:background="@drawable/rounded_button"
+                            android:onClick="eliminarFiltros"
+                            android:text="Eliminar Filtros"
+                            android:textColor="#FFFFFF"
+                            android:visibility="invisible" />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+            </RelativeLayout>
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="550dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical">
 

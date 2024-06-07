@@ -14,8 +14,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,7 +41,12 @@ import java.util.Locale;
 
 public class VerRestaurantes extends AppCompatActivity {
     private Usuario usuario;
-
+    private int filtrar=0;
+    LinearLayout layoutEntero;
+    LinearLayout layoutItems;
+    LinearLayout layoutBotones;
+    Button bfiltrar;
+    Button beliminarFiltros;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,11 +55,16 @@ public class VerRestaurantes extends AppCompatActivity {
         usuario = (Usuario) intent.getSerializableExtra("usuario");
         @SuppressLint({"MissingInflatedId", "LocalSuppress"}) TextView t = findViewById(R.id.labelVerNombre);
         t.setText("Bienvenido " + usuario.getNombreUsuario());
+         layoutEntero= findViewById(R.id.layoutentero);
+         layoutItems= findViewById(R.id.layoutItems);
+         layoutBotones= findViewById(R.id.layoutBotones);
+         bfiltrar=findViewById(R.id.button3);
+         beliminarFiltros=findViewById(R.id.button5);
         menu();
         reseña();
         cargar(70);
         verNotificaciones();
-        rellenarSpinnerComunidades();
+
     }
 
     public void rellenarSpinnerComunidades(){
@@ -218,10 +231,12 @@ public class VerRestaurantes extends AppCompatActivity {
     }
 
 
-    public void Filtrar(View view){
-        Spinner ciudades =findViewById(R.id.spinerciudadesmain);
+    public void Filtrar(View view) {
+        Spinner ciudades = findViewById(R.id.spinerciudadesmain);
+        String ciudadS = (String) ciudades.getSelectedItem();
+        if (filtrar==1) {
+            Toast.makeText(VerRestaurantes.this, ciudadS, Toast.LENGTH_SHORT).show();
         DatabaseReference restaurantesRef = FirebaseDatabase.getInstance().getReference("Restaurantes");
-        String ciudadS= (String) ciudades.getSelectedItem();
         Query query = restaurantesRef.orderByChild("ciudad").equalTo(ciudadS);
 
         query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -234,24 +249,26 @@ public class VerRestaurantes extends AppCompatActivity {
                     String tipo = restauranteSnapshot.child("tipo").getValue(String.class);
                     String dniUsuario = restauranteSnapshot.child("dniUsuario").getValue(String.class);
                     String imageUrl = restauranteSnapshot.child("imagen").getValue(String.class);
-                    int valoracion= restauranteSnapshot.child("valoracion").getValue(Integer.class);
+                    int valoracion = restauranteSnapshot.child("valoracion").getValue(Integer.class);
                     String comunidadaAutonoma = restauranteSnapshot.child("comunidadaAutonoma").getValue(String.class);
                     String provincia = restauranteSnapshot.child("provincia").getValue(String.class);
                     String ciudad = restauranteSnapshot.child("ciudad").getValue(String.class);
-                    GenericTypeIndicator<ArrayList<Reserva>> genericTypeIndicator = new GenericTypeIndicator<ArrayList<Reserva>>() {};
+                    GenericTypeIndicator<ArrayList<Reserva>> genericTypeIndicator = new GenericTypeIndicator<ArrayList<Reserva>>() {
+                    };
                     ArrayList<Reserva> reservas = restauranteSnapshot.child("reservas").getValue(genericTypeIndicator);
 
-                    GenericTypeIndicator<ArrayList<Reseña>> genericTypeIndicator2 = new GenericTypeIndicator<ArrayList<Reseña>>() {};
+                    GenericTypeIndicator<ArrayList<Reseña>> genericTypeIndicator2 = new GenericTypeIndicator<ArrayList<Reseña>>() {
+                    };
                     ArrayList<Reseña> reseñas = restauranteSnapshot.child("reseñas").getValue(genericTypeIndicator2);
 
                     int comensales = restauranteSnapshot.child("comensales").getValue(Integer.class);
 
-                    Restaurante r = new Restaurante(id, nombre, tipo,comunidadaAutonoma,provincia, ciudad, dniUsuario, imageUrl, comensales, reservas,reseñas,valoracion);
-                        restaurantes.add(r);
+                    Restaurante r = new Restaurante(id, nombre, tipo, comunidadaAutonoma, provincia, ciudad, dniUsuario, imageUrl, comensales, reservas, reseñas, valoracion);
+                    restaurantes.add(r);
 
                 }
 
-                if(restaurantes!=null) {
+                if (restaurantes != null) {
                     RecyclerView recyclerView = findViewById(R.id.recyclermenuRestaurantesFavoritos);
                     RestauranteAdapter adapter = new RestauranteAdapter(getApplicationContext(), restaurantes, usuario);
                     adapter.setOnClickListener(new View.OnClickListener() {
@@ -277,10 +294,70 @@ public class VerRestaurantes extends AppCompatActivity {
                 // Manejar errores de Firebase
             }
         });
+    }else{
+            filtrar=1;
+            rellenarSpinnerComunidades();
+            layoutEntero= findViewById(R.id.layoutentero);
+            layoutItems= findViewById(R.id.layoutItems);
+            layoutBotones= findViewById(R.id.layoutBotones);
+            bfiltrar=findViewById(R.id.button3);
+            beliminarFiltros=findViewById(R.id.button5);
+
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) bfiltrar.getLayoutParams();
+            params.leftMargin = 10; // Establece el margen izquierdo en dp (reemplaza con el valor deseado)
+            bfiltrar.setLayoutParams(params);
+
+            beliminarFiltros.setVisibility(View.VISIBLE);
+
+            // Cambiar el ancho del layoutEntero a 70dp
+            LinearLayout.LayoutParams layoutEnteroParams = (LinearLayout.LayoutParams) layoutEntero.getLayoutParams();
+            layoutEnteroParams.height = (int) (70 * getResources().getDisplayMetrics().density);
+            layoutEntero.setLayoutParams(layoutEnteroParams);
+
+            // Cambiar el margen superior de layoutBotones a 35dp
+
+            RelativeLayout.LayoutParams layoutBotonesParams = new RelativeLayout.LayoutParams(
+                    layoutBotones.getLayoutParams().width, layoutBotones.getLayoutParams().height);
+            layoutBotonesParams.topMargin = (int) (35 * getResources().getDisplayMetrics().density);
+            layoutBotones.setLayoutParams(layoutBotonesParams);
+
+            // Hacer visible el layoutItems
+            layoutItems.setVisibility(View.VISIBLE);
+        }
 
     }
 
     public void eliminarFiltros(View view){
+        filtrar=0;
+
+        rellenarSpinnerComunidades();
+        layoutEntero= findViewById(R.id.layoutentero);
+        layoutItems= findViewById(R.id.layoutItems);
+        layoutBotones= findViewById(R.id.layoutBotones);
+        bfiltrar=findViewById(R.id.button3);
+        beliminarFiltros=findViewById(R.id.button5);
+
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) bfiltrar.getLayoutParams();
+        params.leftMargin = 330; // Establece el margen izquierdo en dp (reemplaza con el valor deseado)
+        bfiltrar.setLayoutParams(params);
+
+        beliminarFiltros.setVisibility(View.INVISIBLE);
+
+        // Cambiar el ancho del layoutEntero a 70dp
+        LinearLayout.LayoutParams layoutEnteroParams = (LinearLayout.LayoutParams) layoutEntero.getLayoutParams();
+        layoutEnteroParams.height = (int) (45 * getResources().getDisplayMetrics().density);
+        layoutEntero.setLayoutParams(layoutEnteroParams);
+
+        // Cambiar el margen superior de layoutBotones a 35dp
+
+        RelativeLayout.LayoutParams layoutBotonesParams = new RelativeLayout.LayoutParams(
+                layoutBotones.getLayoutParams().width, layoutBotones.getLayoutParams().height);
+        layoutBotonesParams.topMargin = (int) (10 * getResources().getDisplayMetrics().density);
+        layoutBotones.setLayoutParams(layoutBotonesParams);
+
+        // Hacer visible el layoutItems
+        layoutItems.setVisibility(View.INVISIBLE);
+
         cargar(0);
     }
 
@@ -490,6 +567,7 @@ public class VerRestaurantes extends AppCompatActivity {
             public void onClick(DialogInterface dialogo1, int id) {
                 // Ir a la pantalla de reseña
                 eliminarReserva(reservaActual);
+                guardarHistorial(reservaActual);
                  Intent intent = new Intent(VerRestaurantes.this, ResenaActivity.class);
                 intent.putExtra("usuario", usuario);
                 intent.putExtra("Restauranteid", reservaActual.getIdRestaurante());
@@ -507,6 +585,7 @@ public class VerRestaurantes extends AppCompatActivity {
                 // Eliminar la reserva actual de la lista
                 reservas.remove(0);
                 eliminarReserva(reservaActual);
+                guardarHistorial(reservaActual);
 
                 // Mostrar la siguiente reserva
                 mostrarReservas(reservas);
@@ -547,6 +626,47 @@ public class VerRestaurantes extends AppCompatActivity {
             }
         });
     }
+
+    public void guardarHistorial(Reserva reserva) {
+        String idRestaurante = reserva.getIdRestaurante();
+        if (idRestaurante == null || idRestaurante.isEmpty()) {
+            Toast.makeText(VerRestaurantes.this, "ID de restaurante no válido", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        DatabaseReference restaurantesRef = FirebaseDatabase.getInstance().getReference("Restaurantes").child(idRestaurante);
+
+        restaurantesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                GenericTypeIndicator<ArrayList<Reserva>> genericTypeIndicator = new GenericTypeIndicator<ArrayList<Reserva>>() {};
+                List<Reserva> reservas = snapshot.child("historialReservas").getValue(genericTypeIndicator);
+                if (reservas == null) {
+                    Toast.makeText(VerRestaurantes.this, "Reservas es null", Toast.LENGTH_SHORT).show();
+                    reservas = new ArrayList<>();
+                }
+                reservas.add(reserva);
+                Toast.makeText(VerRestaurantes.this, "Después: " + reservas.size(), Toast.LENGTH_SHORT).show();
+
+                // Asegúrate de que la referencia del nodo es la correcta
+                DatabaseReference restauranteRef = FirebaseDatabase.getInstance().getReference("Restaurantes").child(idRestaurante);
+                restauranteRef.child("historialReservas").setValue(reservas).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(VerRestaurantes.this, "Historial guardado correctamente", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(VerRestaurantes.this, "Error al guardar historial", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(VerRestaurantes.this, "Error en la consulta: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
 
 
 

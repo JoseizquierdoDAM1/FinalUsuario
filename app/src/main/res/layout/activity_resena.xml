@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F0F0F0"
     tools:context=".ResenaActivity">
 
     <LinearLayout
@@ -19,40 +20,70 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="287dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical"></LinearLayout>
-
-            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/labelNombreRestaurante"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:text="TextView"
-                    android:textAlignment="center"
-                    tools:layout_editor_absoluteX="96dp"
-                    tools:layout_editor_absoluteY="49dp" />
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="5"
+                    android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/labelImagenRestaurante"
+                    <TextView
+                        android:id="@+id/labelNombreRestaurante"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="TextView"
+                        android:textAlignment="center"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        tools:layout_editor_absoluteX="96dp"
+                        tools:layout_editor_absoluteY="49dp" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="162dp"
-                    tools:layout_editor_absoluteX="92dp"
-                    tools:layout_editor_absoluteY="87dp"
-                    tools:srcCompat="@tools:sample/avatars" />
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="20dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.5"
+                        android:orientation="vertical">
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/labelImagenRestaurante"
+                            android:layout_width="match_parent"
+                            android:layout_height="162dp"
+                            tools:layout_editor_absoluteX="92dp"
+                            tools:layout_editor_absoluteY="87dp"
+                            tools:srcCompat="@tools:sample/avatars" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.5"
+                        android:orientation="vertical"></LinearLayout>
+
+                </LinearLayout>
+
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="273dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical"></LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -193,25 +224,34 @@
                 android:id="@+id/textView6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:text="Escribe una reseña"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/labelReseña"
                 android:layout_width="match_parent"
                 android:layout_height="92dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rounded_corners"
                 android:ems="10"
                 android:gravity="start|top"
-                android:inputType="textMultiLine"
+                android:inputType="text|textMultiLine"
+                android:text="     "
                 tools:layout_editor_absoluteX="65dp"
                 tools:layout_editor_absoluteY="312dp" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rounded_button"
                 android:onClick="crearReseña"
-                android:text="Añadir reserva" />
+                android:text="Añadir reseña"
+                android:textColor="#FFFFFF" />
         </LinearLayout>
 
     </LinearLayout>

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -60,6 +61,7 @@ public class RegistroUsuario extends AppCompatActivity {
                         usuariosRef.child(id).setValue(u);
                         error.setText("¡Usuario registrado exitosamente!");
                         error.setVisibility(View.VISIBLE);
+                        gmail(u.getCorreo());
                         Intent i = new Intent(RegistroUsuario.this, MainActivity.class);
                         startActivity(i);
                     } else {
@@ -77,6 +79,25 @@ public class RegistroUsuario extends AppCompatActivity {
                 // Manejo de errores
             }
         });
+    }
+
+    public void gmail(String emailUsuario){
+        new SendEmailTask().execute(emailUsuario, "Registro en reserBAR", "Gracias por crear su cuenta en reserBAR");
+
+    }
+
+    private class SendEmailTask extends AsyncTask<String, Void, Void> {
+
+        @Override
+        protected Void doInBackground(String... params) {
+            String toEmail = params[0];
+            String subject = params[1];
+            String body = params[2];
+
+            EmailSender.sendEmail(toEmail, subject, body);
+
+            return null;
+        }
     }
 
 

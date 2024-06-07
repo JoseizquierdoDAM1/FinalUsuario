@@ -10,13 +10,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/closeButton"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
-        android:text="Cerrar" />
+        android:background="@drawable/rounded_button"
+        android:text="Cerrar"
+        android:textColor="#FFFFFF" />
 
 
 </LinearLayout>
