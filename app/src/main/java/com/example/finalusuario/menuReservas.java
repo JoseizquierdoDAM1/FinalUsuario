@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -93,11 +92,6 @@ public class menuReservas extends AppCompatActivity {
                     }
                 }
 
-                if (!reservasUsuario.isEmpty()) {
-                    Toast.makeText(menuReservas.this, "Hay reservas", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(menuReservas.this, "No hay reservas", Toast.LENGTH_SHORT).show();
-                }
 
                 RecyclerView recyclerView = findViewById(R.id.recyclerMenuReservas);
                 ReservasMenuAdapter adapter = new ReservasMenuAdapter(menuReservas.this, reservasUsuario,tipo); // Cambiado a menuReservas.this

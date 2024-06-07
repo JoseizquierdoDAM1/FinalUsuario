@@ -40,7 +40,6 @@ public class VerResenas extends AppCompatActivity {
                 GenericTypeIndicator<ArrayList<Reseña>> genericTypeIndicator2 = new GenericTypeIndicator<ArrayList<Reseña>>() {};
                 ArrayList<Reseña> reseñas = dataSnapshot.child("reseñas").getValue(genericTypeIndicator2);
                 String nombre=dataSnapshot.child("nombre").getValue(String.class);
-                Toast.makeText(VerResenas.this, nombre, Toast.LENGTH_SHORT).show();
 
                 if(reseñas!=null) {
                     RecyclerView recyclerView = findViewById(R.id.recyclerVerReseñas);

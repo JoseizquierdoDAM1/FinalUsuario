@@ -43,14 +43,14 @@
 
                 <TextView
                     android:id="@+id/labelNombreRecycler"
-                    android:layout_width="263dp"
+                    android:layout_width="262dp"
                     android:layout_height="match_parent"
                     android:layout_marginStart="30dp"
                     android:autoSizeMaxTextSize="30dp"
                     android:autoSizeMinTextSize="20dp"
                     android:background="@drawable/background_rounded"
                     android:backgroundTint="#2e4091"
-                    android:text="Nombre del restaurante"
+                    android:text="  Nombre del restaurante"
                     android:textAlignment="center"
                     android:textColor="#FFFCFC"
                     android:textSize="20sp"

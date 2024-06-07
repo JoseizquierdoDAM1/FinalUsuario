@@ -155,7 +155,6 @@ public class RestauranteAdapter extends RecyclerView.Adapter<RestauranteAdapter.
 
                     UsuariosRef.setValue(favoritos).addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            Toast.makeText(applicationContext, "Se guardó correctamente", Toast.LENGTH_SHORT).show();
                             Log.d("TAG", "Datos de favoritos actualizados correctamente.");
                         } else {
                             Toast.makeText(applicationContext, "No se guardó correctamente", Toast.LENGTH_SHORT).show();
@@ -188,7 +187,6 @@ public class RestauranteAdapter extends RecyclerView.Adapter<RestauranteAdapter.
 
                     UsuariosRef.setValue(favoritos).addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            Toast.makeText(applicationContext, "Se guardó correctamente", Toast.LENGTH_SHORT).show();
                             Log.d("TAG", "Datos de favoritos actualizados correctamente.");
                         } else {
                             Toast.makeText(applicationContext, "No se guardó correctamente", Toast.LENGTH_SHORT).show();

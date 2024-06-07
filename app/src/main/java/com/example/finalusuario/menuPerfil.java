@@ -156,7 +156,6 @@ public class menuPerfil extends AppCompatActivity {
                             usuariosRef.child("contraseña").setValue(password);
                             usuariosRef.child("correo").setValue(labelGmail.getText().toString());
                             guardarmensaje();
-                            Toast.makeText(menuPerfil.this, "Contraseña guardada con éxito", Toast.LENGTH_SHORT).show();
 
                         }else{
                             Toast.makeText(menuPerfil.this, "La contraseña no puede ser igual a la anterior", Toast.LENGTH_SHORT).show();
@@ -245,8 +244,6 @@ public class menuPerfil extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    Toast.makeText(menuPerfil.this, "Imagen actualizada correctamente", Toast.LENGTH_SHORT).show();
-                    // Actualizar la interfaz de usuario
                     actualizarImagenPerfil(urlImagen);
                 } else {
                     Toast.makeText(menuPerfil.this, "Error al actualizar la imagen", Toast.LENGTH_SHORT).show();

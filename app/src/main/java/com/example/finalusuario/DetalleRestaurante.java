@@ -99,7 +99,6 @@ public class DetalleRestaurante extends AppCompatActivity {
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
                 // Mostrar la fecha completa
                 String fechaCompleta = String.format("%d-%02d-%02d", year, month + 1, dayOfMonth);
-                Toast.makeText(getApplicationContext(), fechaCompleta, Toast.LENGTH_SHORT).show();
                 try {
                     fechaSeleccionada = sdf.parse(fechaCompleta);
                 } catch (ParseException e) {
@@ -144,7 +143,6 @@ public class DetalleRestaurante extends AppCompatActivity {
 
                 if (i == 0) {
                 if (fechaSeleccionadaS.equals(fechaformateadahoyS)) {
-                    Toast.makeText(DetalleRestaurante.this, fechaSeleccionadaS + " " + fechaformateadahoyS, Toast.LENGTH_SHORT).show();
                     int horaactual = Integer.parseInt(currentHour);
                     if(horastdesayuno!=null) {
                         String hourDesayunoString = horastdesayuno.get(horastdesayuno.size() - 1).split(":")[0];
@@ -162,8 +160,6 @@ public class DetalleRestaurante extends AppCompatActivity {
                         int ultimahorareservaComida = Integer.parseInt(hourComidaString);
 
                         if (ultimahorareservaComida <= horaactual) {
-                            Toast.makeText(DetalleRestaurante.this, horaactual + "  " + ultimahorareservaComida, Toast.LENGTH_SHORT).show();
-                            Toast.makeText(DetalleRestaurante.this, "0:" + turnos.get(0) + "  1:" + turnos.get(1), Toast.LENGTH_SHORT).show();
                             if (turnos.get(0).equals("Comida")) {
                                 turnos.remove(0);
                             } else if (turnos.get(1).equals("Comida")) {
@@ -356,7 +352,6 @@ public class DetalleRestaurante extends AppCompatActivity {
         String turnoseleccionado = (String) spinnerTurno.getSelectedItem();
         String horaseleccionada = (String) spinnerHora.getSelectedItem();
 
-        Toast.makeText(getApplicationContext(), fechaSeleccionada + "  " + horaseleccionada, Toast.LENGTH_SHORT).show();
         int id=0;
 
 
@@ -369,7 +364,6 @@ public class DetalleRestaurante extends AppCompatActivity {
 
         Reserva r = new Reserva(id,usuario.getNombreUsuario(), restaurante.getId(),restaurante.getNombre(), fechaSeleccionada, turnoseleccionado, horaseleccionada, Integer.valueOf(comensales.getText().toString()));
         r.setIdUsuario(usuario.getId());
-        Toast.makeText(DetalleRestaurante.this, r.getIdUsuario(), Toast.LENGTH_SHORT).show();
         restaurante.getReservas().add(r);
 
         // Guardar en Firebase

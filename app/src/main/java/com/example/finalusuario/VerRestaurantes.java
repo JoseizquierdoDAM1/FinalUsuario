@@ -235,7 +235,6 @@ public class VerRestaurantes extends AppCompatActivity {
         Spinner ciudades = findViewById(R.id.spinerciudadesmain);
         String ciudadS = (String) ciudades.getSelectedItem();
         if (filtrar==1) {
-            Toast.makeText(VerRestaurantes.this, ciudadS, Toast.LENGTH_SHORT).show();
         DatabaseReference restaurantesRef = FirebaseDatabase.getInstance().getReference("Restaurantes");
         Query query = restaurantesRef.orderByChild("ciudad").equalTo(ciudadS);
 
@@ -477,7 +476,6 @@ public class VerRestaurantes extends AppCompatActivity {
                 ImageView img2 = findViewById(R.id.hayMensajes);
 
                 if (mensajes == null || mensajes.isEmpty()) {
-                    Toast.makeText(VerRestaurantes.this, "Lista de mensajes vacía", Toast.LENGTH_SHORT).show();
                     img.setVisibility(View.VISIBLE);
                     img2.setVisibility(View.INVISIBLE);
                 } else {
@@ -525,8 +523,7 @@ public class VerRestaurantes extends AppCompatActivity {
                                 try {
                                     Date reservaDate = dateTimeFormat.parse(fechaHoraString);
                                     if (reservaDate != null && reservaDate.before(today)) {
-                                        Toast.makeText(VerRestaurantes.this, "Fecha actual: " + today + " | Fecha de reserva: " + reservaDate, Toast.LENGTH_SHORT).show();
-                                        reservas.add(r);
+                                       reservas.add(r);
                                     }
                                 } catch (ParseException e) {
                                     e.printStackTrace();
@@ -613,7 +610,6 @@ public class VerRestaurantes extends AppCompatActivity {
                     }
                     DatabaseReference restauranteRef = FirebaseDatabase.getInstance().getReference("Restaurantes").child(reserva.getIdRestaurante());
                     restauranteRef.child("reservas").setValue(reservasActualizadas);
-                    Toast.makeText(VerRestaurantes.this, "Reserva Eliminada", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(VerRestaurantes.this, "Lista de reservas vacia", Toast.LENGTH_SHORT).show();
                 }
@@ -642,17 +638,14 @@ public class VerRestaurantes extends AppCompatActivity {
                 GenericTypeIndicator<ArrayList<Reserva>> genericTypeIndicator = new GenericTypeIndicator<ArrayList<Reserva>>() {};
                 List<Reserva> reservas = snapshot.child("historialReservas").getValue(genericTypeIndicator);
                 if (reservas == null) {
-                    Toast.makeText(VerRestaurantes.this, "Reservas es null", Toast.LENGTH_SHORT).show();
                     reservas = new ArrayList<>();
                 }
                 reservas.add(reserva);
-                Toast.makeText(VerRestaurantes.this, "Después: " + reservas.size(), Toast.LENGTH_SHORT).show();
 
                 // Asegúrate de que la referencia del nodo es la correcta
                 DatabaseReference restauranteRef = FirebaseDatabase.getInstance().getReference("Restaurantes").child(idRestaurante);
                 restauranteRef.child("historialReservas").setValue(reservas).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        Toast.makeText(VerRestaurantes.this, "Historial guardado correctamente", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(VerRestaurantes.this, "Error al guardar historial", Toast.LENGTH_SHORT).show();
                     }

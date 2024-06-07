@@ -85,7 +85,6 @@ public class ReseñaMenuAdapter extends RecyclerView.Adapter<ReseñaMenuAdapter.
                String imagen = snapshot.child("imagen").getValue(String.class);
                String nombre= snapshot.child("nombre").getValue(String.class);
 
-               Toast.makeText(applicationContext, imagen, Toast.LENGTH_SHORT).show();
                Glide.with(applicationContext).load(imagen).into(holder.imageViewmenuReseñas);
 
                holder.textViewNameMenuReseñas.setText(nombre);

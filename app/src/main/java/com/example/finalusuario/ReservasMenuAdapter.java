@@ -195,9 +195,6 @@ public class ReservasMenuAdapter extends RecyclerView.Adapter<ReservasMenuAdapte
                 String mensaje = "Su reserva para el " + new SimpleDateFormat("dd/MM/yyyy").format(r.getDia()) + " a las " + r.getHora() + " ha sido cancelada";
                 mensajes.add(mensaje);
 
-                // Asegurarse de que el Toast se ejecute en el hilo principal
-                new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(activityContext, mensaje, Toast.LENGTH_SHORT).show());
-
                 usuariosRef.child("mensajes").setValue(mensajes).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
