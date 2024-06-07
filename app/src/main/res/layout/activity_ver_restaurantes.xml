@@ -38,6 +38,13 @@
                             android:layout_height="match_parent"
                             app:srcCompat="@drawable/aaaaa_logo1" />
 
+                        <ImageView
+                            android:id="@+id/imageView4"
+                            android:layout_width="26dp"
+                            android:layout_height="28dp"
+                            android:onClick="salir"
+                            app:srcCompat="@drawable/salir" />
+
                         <TextView
                             android:id="@+id/labelVerNombre"
                             android:layout_width="153dp"

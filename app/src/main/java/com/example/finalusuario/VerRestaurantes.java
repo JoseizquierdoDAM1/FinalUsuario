@@ -659,6 +659,11 @@ public class VerRestaurantes extends AppCompatActivity {
         });
     }
 
+    public void salir(View view){
+        Intent i= new Intent(VerRestaurantes.this, MainActivity.class);
+        startActivity(i);
+    }
+
 
 
 
