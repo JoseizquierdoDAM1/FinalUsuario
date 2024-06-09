@@ -19,9 +19,11 @@ import android.os.Looper;
 import android.provider.CalendarContract;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -105,6 +107,8 @@ public class DetalleRestaurante extends AppCompatActivity {
                     throw new RuntimeException(e);
                 }
                 rellenarSpinners(0);
+                LinearLayout Layouthora=findViewById(R.id.layoutHora);
+                Layouthora.setVisibility(View.INVISIBLE);
             }
         });
         rellenarSpinners(0);
@@ -142,58 +146,68 @@ public class DetalleRestaurante extends AppCompatActivity {
                 String fechaformateadahoyS = sdf.format(fechaformateadahoy);
 
                 if (i == 0) {
-                if (fechaSeleccionadaS.equals(fechaformateadahoyS)) {
-                    int horaactual = Integer.parseInt(currentHour);
-                    if(horastdesayuno!=null) {
-                        String hourDesayunoString = horastdesayuno.get(horastdesayuno.size() - 1).split(":")[0];
-                        int ultimahorareservaDesayuno = Integer.parseInt(hourDesayunoString);
+                    if (fechaSeleccionadaS.equals(fechaformateadahoyS)) {
+                        int horaactual = Integer.parseInt(currentHour);
+                        if (horastdesayuno != null) {
+                            String hourDesayunoString = horastdesayuno.get(horastdesayuno.size() - 1).split(":")[0];
+                            int ultimahorareservaDesayuno = Integer.parseInt(hourDesayunoString);
 
-                        if (ultimahorareservaDesayuno <= horaactual) {
-                            if (turnos.get(0).equals("Desayuno")) {
-                                turnos.remove(0);
+                            if (ultimahorareservaDesayuno <= horaactual) {
+                                if (turnos.get(0).equals("Desayuno")) {
+                                    turnos.remove(0);
+                                }
                             }
                         }
-                    }
 
-                    if(horastcomida!=null){
-                        String hourComidaString = horastcomida.get(horastcomida.size() - 1).split(":")[0];
-                        int ultimahorareservaComida = Integer.parseInt(hourComidaString);
+                        if (horastcomida != null) {
+                            String hourComidaString = horastcomida.get(horastcomida.size() - 1).split(":")[0];
+                            int ultimahorareservaComida = Integer.parseInt(hourComidaString);
 
-                        if (ultimahorareservaComida <= horaactual) {
-                            if (turnos.get(0).equals("Comida")) {
-                                turnos.remove(0);
-                            } else if (turnos.get(1).equals("Comida")) {
-                                turnos.remove(1);
+                            if (ultimahorareservaComida <= horaactual) {
+                                if (turnos.get(0).equals("Comida")) {
+                                    turnos.remove(0);
+                                } else if (turnos.get(1).equals("Comida")) {
+                                    turnos.remove(1);
+                                }
                             }
                         }
-                    }
 
-                    if(horastcena!=null){
-                        String hourCenaString = horastcena.get(horastcena.size() - 1).split(":")[0];
-                        int ultimahorareservaCena = Integer.parseInt(hourCenaString);
-
+                        if (horastcena != null) {
+                            String hourCenaString = horastcena.get(horastcena.size() - 1).split(":")[0];
+                            int ultimahorareservaCena = Integer.parseInt(hourCenaString);
 
 
-                        if (ultimahorareservaCena <= horaactual) {
-                            Date fecha = new Date(hoy+ 86400000);
-                            fechaSeleccionada=fecha ;
-                            myCalendarView.setMinDate(hoy + 86400000);
-                            rellenarSpinners(1);
+                            if (ultimahorareservaCena <= horaactual) {
+                                Date fecha = new Date(hoy + 86400000);
+                                fechaSeleccionada = fecha;
+                                myCalendarView.setMinDate(hoy + 86400000);
+                                rellenarSpinners(1);
+                            }
+
                         }
 
+                    } else {
+
                     }
-
-                }else{
-
                 }
-            }
                 spinnerTurno = (Spinner) findViewById(R.id.spinnerTurno);
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, turnos);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinnerTurno.setAdapter(adapter);
+                spinnerTurno.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
+                        LinearLayout Layouthora = findViewById(R.id.layoutHora);
+                        Layouthora.setVisibility(View.INVISIBLE);
 
+                    }
 
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
             }
 
             @Override
@@ -204,6 +218,9 @@ public class DetalleRestaurante extends AppCompatActivity {
     }
 
     public void buscar(View view) {
+        LinearLayout Layouthora=findViewById(R.id.layoutHora);
+        Layouthora.setVisibility(View.VISIBLE);
+
         Calendar calendar = Calendar.getInstance();
         // Convertir la hora a una cadena si es necesario
         SimpleDateFormat sdf = new SimpleDateFormat("HH:00");
@@ -220,72 +237,79 @@ public class DetalleRestaurante extends AppCompatActivity {
                 ArrayList<String> horastdesayuno = restauranteSnapshot.child("horastdesayuno").getValue(genericTypeIndicator);
                 ArrayList<String> horastcomida = restauranteSnapshot.child("horastcomida").getValue(genericTypeIndicator);
                 ArrayList<String> horastcena= restauranteSnapshot.child("horastcena").getValue(genericTypeIndicator);
-
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                String fechaSeleccionadaS = sdf.format(fechaSeleccionada);
+                String fechaformateadahoyS = sdf.format(fechaformateadahoy);
                 ArrayList<String>hd= new ArrayList<>();
-                int i=0;
-                if(horastdesayuno!=null) {
-                    for (String s : horastdesayuno) {
-                        if (i == 1) {
-                            hd.add(s);
-                        }
-                        if (s.equals(currentHour)) {
-                            i = 1;
-                        }
-                    }
-                }
-
                 ArrayList<String> hc = new ArrayList<>();
-                if(horastcomida!=null) {
-                    int i2 = 0;
-                    for (String s : horastcomida) {
-                        if (i2 == 1) {
-                            hc.add(s);
-                        }
-                        if (s.equals(currentHour)) {
-                            i2 = 1;
-                        }
-                    }
-                }
                 ArrayList<String> hce = new ArrayList<>();
-                if(horastcena!=null) {
-                    int i3 = 0;
-                    for (String s : horastcena) {
-                        if (i3 == 1) {
-                            hce.add(s);
+
+                if(fechaSeleccionadaS.equals(fechaformateadahoyS)) {
+                    int i = 0;
+                    if (horastdesayuno != null) {
+                        for (String s : horastdesayuno) {
+                            if (i == 1) {
+                                hd.add(s);
+                            }
+                            if (s.equals(currentHour)) {
+                                i = 1;
+                            }
                         }
-                        if (s.equals(currentHour)) {
-                            i3 = 1;
+                    }
+
+
+                    if (horastcomida != null) {
+                        int i2 = 0;
+                        for (String s : horastcomida) {
+                            if (i2 == 1) {
+                                hc.add(s);
+                            }
+                            if (s.equals(currentHour)) {
+                                i2 = 1;
+                            }
+                        }
+                    }
+
+                    if (horastcena != null) {
+                        int i3 = 0;
+                        for (String s : horastcena) {
+                            if (i3 == 1) {
+                                hce.add(s);
+                            }
+                            if (s.equals(currentHour)) {
+                                i3 = 1;
+                            }
                         }
                     }
                 }
-                spinnerHora = (Spinner) findViewById(R.id.spinnerHora);
-                ArrayAdapter<String> adapter=null;
-                if(spinnerTurno.getSelectedItem().toString().equals("Desayuno")){
-                    if(hd.size()==0) {
-                        adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, horastdesayuno);
-                    }else{
-                        adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, hd);
+                    spinnerHora = (Spinner) findViewById(R.id.spinnerHora);
+                    ArrayAdapter<String> adapter = null;
+                    if (spinnerTurno.getSelectedItem().toString().equals("Desayuno")) {
+                        if (hd.size() == 0) {
+                            adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, horastdesayuno);
+                        } else {
+                            adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, hd);
+                        }
                     }
-                }
-                if(spinnerTurno.getSelectedItem().toString().equals("Comida")){
-                    if(hc.size()==0){
-                        adapter= new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, horastcomida);
-                    }else{
-                        adapter= new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, hc);
+                    if (spinnerTurno.getSelectedItem().toString().equals("Comida")) {
+                        if (hc.size() == 0) {
+                            adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, horastcomida);
+                        } else {
+                            adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, hc);
+                        }
+
+                    }
+                    if (spinnerTurno.getSelectedItem().toString().equals("Cena")) {
+                        if (hce.size() == 0) {
+                            adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, horastcena);
+                        } else {
+                            adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, hce);
+                        }
                     }
 
-                }
-                if(spinnerTurno.getSelectedItem().toString().equals("Cena")){
-                    if(hce.size()==0){
-                        adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, horastcena);
-                    }else {
-                        adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, hce);
-                    }
-                }
 
-
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spinnerHora.setAdapter(adapter);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spinnerHora.setAdapter(adapter);
 
 
 
