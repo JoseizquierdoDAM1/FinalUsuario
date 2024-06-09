@@ -549,7 +549,6 @@ public class VerRestaurantes extends AppCompatActivity {
     private void mostrarReservas(List<Reserva> reservas) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         if (reservas.isEmpty()) {
-            Toast.makeText(VerRestaurantes.this, "No hay reservas anteriores.", Toast.LENGTH_SHORT).show();
             return;
         }
 
